@@ -1,2 +1,24 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System;
+using Gtk;
+using System.IO;
+
+class Program
+{
+    public static void Main(string[] args)
+    {
+    
+        Console.WriteLine("Creando la ventana...");
+        Window window = new Window("Mi ventana GTK#");
+
+        Console.WriteLine("Configurando la ventana...");
+        window.SetDefaultSize(400, 300);
+        window.SetPosition(WindowPosition.Center);
+
+        Console.WriteLine("Mostrando la ventana...");
+        window.ShowAll();
+
+        Console.WriteLine("Iniciando el ciclo de eventos...");
+        Application.Run();
+
+    }
+}
