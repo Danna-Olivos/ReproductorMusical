@@ -8,8 +8,8 @@ namespace Database
 
         public class Type
         {
-            public int idType{get;set;}
-            public string? description{get;set;}
+            public int IdType{get;set;}
+            public string? Description{get;set;}
 
         }
 

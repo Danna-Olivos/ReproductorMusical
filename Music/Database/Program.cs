@@ -2,9 +2,8 @@
 using Gtk;
 using System.IO;
 
-namespace MusicApp 
-{
-   class Program
+namespace Database{
+    class Program
     {
         public static void Main(string[] args)
         {
@@ -23,6 +22,6 @@ namespace MusicApp
             Application.Run();
 
         }
-    } 
+    }
 }
 
