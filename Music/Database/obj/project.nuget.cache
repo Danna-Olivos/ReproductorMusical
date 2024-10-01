@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Cxi8/+5APXsv+WCARTxurmiPJswjyar1yssVcEkHVTAkCj/eZczR4+8nC15zQWYxykhuVJRAFccKtSWnEHC0LA==",
+  "dgSpecHash": "wM9kX/dk57ag//B1OjFC0XJnnBLgoSiUv62OqZ02R2fdH3soOIb2gQbKbZgRHrcS5x/dlDaPh8fmrkLCG+PF8Q==",
   "success": true,
   "projectFilePath": "/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/Database.csproj",
   "expectedPackageFiles": [
@@ -33,7 +33,8 @@
     "/home/dannaabigailolivosnoriega/.nuget/packages/system.security.cryptography.protecteddata/4.7.0/system.security.cryptography.protecteddata.4.7.0.nupkg.sha512",
     "/home/dannaabigailolivosnoriega/.nuget/packages/system.security.permissions/4.7.0/system.security.permissions.4.7.0.nupkg.sha512",
     "/home/dannaabigailolivosnoriega/.nuget/packages/system.security.principal.windows/4.7.0/system.security.principal.windows.4.7.0.nupkg.sha512",
-    "/home/dannaabigailolivosnoriega/.nuget/packages/system.windows.extensions/4.7.0/system.windows.extensions.4.7.0.nupkg.sha512"
+    "/home/dannaabigailolivosnoriega/.nuget/packages/system.windows.extensions/4.7.0/system.windows.extensions.4.7.0.nupkg.sha512",
+    "/home/dannaabigailolivosnoriega/.nuget/packages/taglibsharp/2.3.0/taglibsharp.2.3.0.nupkg.sha512"
   ],
   "logs": []
 }
