@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.SQLite;
-// using TagLib; 
 using System.IO;
 
 namespace Database
@@ -15,10 +14,17 @@ namespace Database
         {
             string dataPath = "./Music/Database/Data/MyMusic.db";
             bool dataExists = File.Exists(dataPath);
-            string connectionString = $"Source={dataPath}";
+            string connectionString = $"Source={dataPath};Version=3;";
+           
             connection = new SQLiteConnection(connectionString);
             connection.Open();
             Console.WriteLine("Connection is now opened");
+
+            using (var command = new SQLiteCommand("PRAGMA foreign_keys = ON;", connection))
+            {
+                command.ExecuteNonQuery();
+            }
+            
             if (!dataExists)
             {
                 CreateTables();
@@ -107,6 +113,102 @@ namespace Database
             command.ExecuteNonQuery();
         }
         Console.WriteLine("Data base created successfully");
+        }
+
+        public bool MakePerformer (Performer performer)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT INTO performers (id_performer, id_type, name)" +
+                                "VALUES (@id_performer, @id_type, @name)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_performer", performer.IdPerformer);
+                    command.Parameters.AddWithValue("@id_type", performer.type.IdType);
+                    command.Parameters.AddWithValue("@name", performer.Name);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Performer added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting performer: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool UpdatePerformer (Performer performer)
+        {
+            bool added = false;
+            try
+            {
+                string query = "UPDATE performers set id_type = @id_type, name = @name where id_performer = @id_performer" ;
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_performer", performer.IdPerformer);
+                    command.Parameters.AddWithValue("@id_type", performer.type.IdType);
+                    command.Parameters.AddWithValue("@name", performer.Name);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Performer added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting performer: " + ex.Message);
+            }
+            return added;
+        }
+
+         public bool RemovePerformer (Performer performer)
+        {
+            bool added = false;
+            try
+            {
+                string query = "DELETE from performers where id_performer = @id_performer" ;
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_performer", performer.IdPerformer);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Performer added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting performer: " + ex.Message);
+            }
+            return added;
+        }
+
+        //Disconnection method        
+        public void Disconnect()
+        {
+            if (connection != null && connection.State == System.Data.ConnectionState.Open)
+            {
+                connection.Close();
+                Console.WriteLine("Connection closed");
+            }
         }
     }
     
