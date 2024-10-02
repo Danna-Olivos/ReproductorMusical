@@ -1,13 +1,13 @@
 namespace Database
 {
-    public abstract class Performer
+    public class Performer
     {
         public int IdPerformer{get;set;}
         public string Name {get;set;}
-        public required Type type{get;set;}
+        public Type type{get;set;}
 
         //factoryyyyy
-        protected Performer(int idPerformer, string name, Type type)
+        Performer(int idPerformer, string name, Type type)
         {
             IdPerformer = idPerformer;
             Name = name;

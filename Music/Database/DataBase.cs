@@ -115,17 +115,17 @@ namespace Database
         Console.WriteLine("Data base created successfully");
         }
 
+        //make, update, remove, retreive PERFORMERS
         public bool MakePerformer (Performer performer)
         {
             bool added = false;
             try
             {
-                string query = "INSERT INTO performers (id_performer, id_type, name)" +
-                                "VALUES (@id_performer, @id_type, @name)";
+                string query = "INSERT INTO performers (id_type, name)" +
+                                "VALUES (@id_type, @name)";
                 
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@id_performer", performer.IdPerformer);
                     command.Parameters.AddWithValue("@id_type", performer.type.IdType);
                     command.Parameters.AddWithValue("@name", performer.Name);
                     int rowsAffected = command.ExecuteNonQuery();
@@ -147,7 +147,7 @@ namespace Database
 
         public bool UpdatePerformer (Performer performer)
         {
-            bool added = false;
+            bool updated = false;
             try
             {
                 string query = "UPDATE performers set id_type = @id_type, name = @name where id_performer = @id_performer" ;
@@ -160,23 +160,23 @@ namespace Database
                     int rowsAffected = command.ExecuteNonQuery();
 
                     if(rowsAffected > 0){
-                        added = true;
+                        updated = true;
                     }
         
                 }
-                Console.WriteLine("Performer added");
-                return added;
+                Console.WriteLine("Performer updated");
+                return updated;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while inserting performer: " + ex.Message);
+                Console.WriteLine("Error while updating performer: " + ex.Message);
             }
-            return added;
+            return updated;
         }
 
          public bool RemovePerformer (Performer performer)
         {
-            bool added = false;
+            bool removed = false;
             try
             {
                 string query = "DELETE from performers where id_performer = @id_performer" ;
@@ -187,19 +187,20 @@ namespace Database
                     int rowsAffected = command.ExecuteNonQuery();
 
                     if(rowsAffected > 0){
-                        added = true;
+                        removed = true;
                     }
         
                 }
-                Console.WriteLine("Performer added");
-                return added;
+                Console.WriteLine("Performer removed");
+                return removed;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while inserting performer: " + ex.Message);
+                Console.WriteLine("Error while removing performer: " + ex.Message);
             }
-            return added;
+            return removed;
         }
+        
 
         //Disconnection method        
         public void Disconnect()

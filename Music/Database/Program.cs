@@ -3,7 +3,7 @@ using Gtk;
 using System.IO;
 
 namespace Database{
-    class Program
+    class Program //aca el usuario va a definir el directorio en donde minar
     {
         public static void Main(string[] args)
         {

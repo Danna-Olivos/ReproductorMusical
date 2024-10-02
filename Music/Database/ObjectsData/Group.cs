@@ -1,6 +1,6 @@
 namespace Database
 {
-    public class Group : Performer
+    public class Group
     {
         public int IdGroup{get;set;}
         public string? GropuName {get;set;}

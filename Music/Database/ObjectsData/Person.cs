@@ -1,6 +1,6 @@
 namespace Database
 {
-    public class Person : Performer
+    public class Person
     {
 
         public int IdPerson{get;set;}
