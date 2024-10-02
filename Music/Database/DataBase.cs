@@ -121,7 +121,7 @@ namespace Database
             bool added = false;
             try
             {
-                string query = "INSERT INTO performers (id_type, name)" +
+                string query = "INSERT OR IGNORE INTO performers (id_type, name)" +
                                 "VALUES (@id_type, @name)";
                 
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))

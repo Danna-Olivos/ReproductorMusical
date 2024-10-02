@@ -2,14 +2,13 @@ namespace Database
 {
     public class Performer
     {
-        public int IdPerformer{get;set;}
+        public int IdPerformer{get;set;} //IPK
         public string Name {get;set;}
         public Type type{get;set;}
 
         //factoryyyyy
-        Performer(int idPerformer, string name, Type type)
+        Performer(string name, Type type)
         {
-            IdPerformer = idPerformer;
             Name = name;
             this.type = type;
         }
@@ -18,6 +17,13 @@ namespace Database
         {
             public int IdType{get;set;}
             public string? Description{get;set;}
+
+            public enum Artist
+            {
+                Person = 0,
+                Group = 1,
+                Unknown = 2
+            }
 
         }
 
