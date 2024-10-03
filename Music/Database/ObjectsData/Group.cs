@@ -7,7 +7,7 @@ namespace Database
         public string StartDate{get;set;}
         public string EndDate{get;set;}
 
-        Group(string name, string start_date, string end_date)
+        public Group(string name, string start_date, string end_date)
         {
             GroupName = name;
             StartDate = start_date;

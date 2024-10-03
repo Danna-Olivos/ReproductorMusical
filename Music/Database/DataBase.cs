@@ -174,7 +174,7 @@ namespace Database
             return updated;
         }
 
-         public bool RemovePerformer (Performer performer)
+        public bool RemovePerformer (Performer performer)
         {
             bool removed = false;
             try
@@ -200,7 +200,101 @@ namespace Database
             }
             return removed;
         }
+
+        // public Performer RetreivePerformer(string name)
+        // {
+        //     //luego vemos xd, hay que checar si se deben de indexar otras columnas para hacer las consultas
+        // }
+
+        //make, update, remove, retreive PERSONS
+        public bool MakePerson (Person person)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT OR IGNORE INTO persons (stage_name, real_name, birth_date, death_date)" +
+                                "VALUES (@stage_name, @real_name, @birth_date, @death_date)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@stage_name", person.StageName);
+                    command.Parameters.AddWithValue("@real_name", person.RealName);
+                    command.Parameters.AddWithValue("@birth_date", person.BirthDate);
+                    command.Parameters.AddWithValue("@death_date", person.DeathDate);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
         
+                }
+                Console.WriteLine("Performer added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting performer: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool UpdatePerson (Person person)
+        {
+            bool added = false;
+            try
+            {
+                string query = "UPDATE persons stage_name=@stage_name, real_name= @real_name, birth_date=@birth_date, death_date=@death_date where id_person = @id_person";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_person", person.IdPerson);
+                    command.Parameters.AddWithValue("@stage_name", person.StageName);
+                    command.Parameters.AddWithValue("@real_name", person.RealName);
+                    command.Parameters.AddWithValue("@birth_date", person.BirthDate);
+                    command.Parameters.AddWithValue("@death_date", person.DeathDate);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Person updated");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while updating performer: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool RemovePerson (Person person)
+        {
+            bool added = false;
+            try
+            {
+                string query = "DELETE from persons where id_person = @id_person";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_person", person.IdPerson);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Person removed");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while removing performer: " + ex.Message);
+            }
+            return added;
+        }
 
         //Disconnection method        
         public void Disconnect()

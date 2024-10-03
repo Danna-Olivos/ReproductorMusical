@@ -7,7 +7,7 @@ namespace Database
         public Type type{get;set;}
 
         //factoryyyyy
-        Performer(string name, Type type)
+        public Performer(string name, Type type)
         {
             Name = name;
             this.type = type;

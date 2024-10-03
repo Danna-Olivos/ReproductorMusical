@@ -7,7 +7,7 @@ namespace Database
         public string Name{get;set;}
         public int Year{get;set;}
 
-        Albums(string path, string name, int year)
+        public Albums(string path, string name, int year)
         {
             Path = path;
             Name = name;

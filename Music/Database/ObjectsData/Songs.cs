@@ -11,7 +11,7 @@ namespace Database
         public int Year{get;set;}
         public string Genre{get;set;}
 
-        Songs(int id_performer, int id_album, string path, string title, int track, int year, string genre)
+        public Songs(int id_performer, int id_album, string path, string title, int track, int year, string genre)
         {
             IdPerformer = id_performer;
             IdAlbum = id_album;
