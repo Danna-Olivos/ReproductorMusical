@@ -21,5 +21,17 @@ namespace Database
             Year = year;
             Genre = genre; 
         }
+
+        public Songs(int id_song,int id_performer, int id_album, string path, string title, int track, int year, string genre)
+        {
+            IdSong = id_song;
+            IdPerformer = id_performer;
+            IdAlbum = id_album;
+            Path = path;
+            Title = title;
+            Track = track;
+            Year = year;
+            Genre = genre; 
+        }
     }
 }

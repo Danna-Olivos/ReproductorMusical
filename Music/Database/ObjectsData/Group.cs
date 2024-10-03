@@ -13,6 +13,14 @@ namespace Database
             StartDate = start_date;
             EndDate = end_date;
         }
+
+        public Group(int id_group, string name, string start_date, string end_date)
+        {
+            IdGroup = id_group;
+            GroupName = name;
+            StartDate = start_date;
+            EndDate = end_date;
+        }
         
     }
 }

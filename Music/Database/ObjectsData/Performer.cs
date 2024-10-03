@@ -13,6 +13,13 @@ namespace Database
             this.type = type;
         }
 
+        public Performer(int id_performer, string name, Type type)
+        {
+            IdPerformer = id_performer;
+            Name = name;
+            this.type = type;
+        }
+
         public class Type
         {
             public int IdType{get;set;}

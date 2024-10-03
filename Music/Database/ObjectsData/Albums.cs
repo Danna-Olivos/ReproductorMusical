@@ -13,5 +13,13 @@ namespace Database
             Name = name;
             Year = year;
         }
+
+         public Albums(int id_album, string path, string name, int year)
+        {
+            IdAlbum = id_album;
+            Path = path;
+            Name = name;
+            Year = year;
+        }
     }
 }
