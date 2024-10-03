@@ -4,34 +4,20 @@ namespace Database
     {
         public int IdPerformer{get;set;} //IPK
         public string Name {get;set;}
-        public Type type{get;set;}
+        public Type.ArtistType Type{get;set;}
 
         //factoryyyyy
-        public Performer(string name, Type type)
+        public Performer(string name, Type.ArtistType type)
         {
             Name = name;
-            this.type = type;
+            Type = type;
         }
 
-        public Performer(int id_performer, string name, Type type)
+        public Performer(int id_performer, string name, Type.ArtistType type)
         {
             IdPerformer = id_performer;
             Name = name;
-            this.type = type;
-        }
-
-        public class Type
-        {
-            public int IdType{get;set;}
-            public string? Description{get;set;}
-
-            public enum Artist
-            {
-                Person = 0,
-                Group = 1,
-                Unknown = 2
-            }
-
+            Type = type;
         }
 
     }

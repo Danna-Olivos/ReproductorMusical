@@ -126,7 +126,7 @@ namespace Database
                 
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@id_type", performer.type.IdType);
+                    command.Parameters.AddWithValue("@id_type", performer.Type);
                     command.Parameters.AddWithValue("@name", performer.Name);
                     int rowsAffected = command.ExecuteNonQuery();
 
@@ -155,7 +155,7 @@ namespace Database
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@id_performer", performer.IdPerformer);
-                    command.Parameters.AddWithValue("@id_type", performer.type.IdType);
+                    command.Parameters.AddWithValue("@id_type", performer.Type);
                     command.Parameters.AddWithValue("@name", performer.Name);
                     int rowsAffected = command.ExecuteNonQuery();
 
