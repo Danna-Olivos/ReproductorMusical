@@ -243,7 +243,7 @@ namespace Database
             bool added = false;
             try
             {
-                string query = "UPDATE persons stage_name=@stage_name, real_name= @real_name, birth_date=@birth_date, death_date=@death_date where id_person = @id_person";
+                string query = "UPDATE persons set stage_name=@stage_name, real_name= @real_name, birth_date=@birth_date, death_date=@death_date where id_person = @id_person";
                 
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
@@ -295,6 +295,310 @@ namespace Database
             }
             return added;
         }
+
+        //make, update, remove, retreive GROUPS
+        public bool MakeGroup (Group group)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT OR IGNORE INTO groups (name,start_date, end_date)" +
+                                "VALUES (@name,@start_date, @end_date)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", group.GroupName);
+                    command.Parameters.AddWithValue("@start_name", group.StartDate);
+                    command.Parameters.AddWithValue("@end_date", group.EndDate);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Group added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting Group: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool UpdateGroup (Group group)
+        {
+            bool added = false;
+            try
+            {
+                string query = "UPDATE groups set name = @name,start_date = @start_date, end_date = @end_date where id_group = @id_group" ;
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_group", group.IdGroup);
+                    command.Parameters.AddWithValue("@name", group.GroupName);
+                    command.Parameters.AddWithValue("@start_name", group.StartDate);
+                    command.Parameters.AddWithValue("@end_date", group.EndDate);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Group updated");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while updating Group: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool RemoveGroup (Group group)
+        {
+            bool added = false;
+            try
+            {
+                string query = "DELETE from groups where id_group = @id_group" ;
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_group", group.IdGroup);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Group removed");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while removing Group: " + ex.Message);
+            }
+            return added;
+        }
+
+        //make, update, remove, retreive ROLAS
+        public bool MakeRolas (Songs rola)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT OR IGNORE INTO rolas (id_performer, id_album, path, title, track, year, genre)" +
+                                "VALUES (@id_performer, @id_album, @path, @title, @track, @year, @genre)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_performer", rola.IdPerformer);
+                    command.Parameters.AddWithValue("@id_album", rola.IdAlbum);
+                    command.Parameters.AddWithValue("@path", rola.Path);
+                    command.Parameters.AddWithValue("@title", rola.Title);
+                    command.Parameters.AddWithValue("@track", rola.Track);
+                    command.Parameters.AddWithValue("@year", rola.Year);
+                    command.Parameters.AddWithValue("@genre", rola.Genre);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Song added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting Song: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool UpdateRolas (Songs rola)
+        {
+            bool added = false;
+            try
+            {
+                string query = "UPDATE rolas set id_performer = @id_performer, id_album = @id_album, path = @path, title = @title, track = @track, year = @year, genre = @genre where id_rola = @id_rola";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_rola", rola.IdSong);
+                    command.Parameters.AddWithValue("@id_performer", rola.IdPerformer);
+                    command.Parameters.AddWithValue("@id_album", rola.IdAlbum);
+                    command.Parameters.AddWithValue("@path", rola.Path);
+                    command.Parameters.AddWithValue("@title", rola.Title);
+                    command.Parameters.AddWithValue("@track", rola.Track);
+                    command.Parameters.AddWithValue("@year", rola.Year);
+                    command.Parameters.AddWithValue("@genre", rola.Genre);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Song updated");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while updated Song: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool RemoveRolas (Songs rola)
+        {
+            bool added = false;
+            try
+            {
+                string query = "DELETE from rolas where id_rola = @id_rola";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_rola", rola.IdSong);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Song removed");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while removed Song: " + ex.Message);
+            }
+            return added;
+        }
+
+        //make, update, remove, retreive IN_GROUP WOTTTTT
+        public bool MakeInGroup (InGroup inG)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT OR IGNORE INTO in_groups (id_person, id_group)" +
+                                "VALUES (@id_person, @id_group)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_person", inG.IdPerson);
+                    command.Parameters.AddWithValue("@id_group", inG.IdGroup);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Added to a group");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while adding to group: " + ex.Message);
+            }
+            return added;
+        }
+
+        //make, update, remove, retreive ALBUMS
+        public bool MakeAlbums (Albums album)
+        {
+            bool added = false;
+            try
+            {
+                string query = "INSERT OR IGNORE INTO albums (path, name, year)" +
+                                "VALUES (@path, @name, @year)";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@path", album.Path);
+                    command.Parameters.AddWithValue("@name", album.Name);
+                    command.Parameters.AddWithValue("@year", album.Year);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Album added");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while inserting Album: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool UpdateAlbums (Albums album)
+        {
+            bool added = false;
+            try
+            {
+                string query = "UPDATE albums set path = @path, name = @name, year = @year where id_album = @id_album";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_album", album.IdAlbum);
+                    command.Parameters.AddWithValue("@path", album.Path);
+                    command.Parameters.AddWithValue("@name", album.Name);
+                    command.Parameters.AddWithValue("@year", album.Year);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Album removed");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while updating Album: " + ex.Message);
+            }
+            return added;
+        }
+
+        public bool RemoveAlbums (Albums album)
+        {
+            bool added = false;
+            try
+            {
+                string query = "Delete from albums where id_album = @id_album";
+                
+                using(SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@id_album", album.IdAlbum);
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if(rowsAffected > 0){
+                        added = true;
+                    }
+        
+                }
+                Console.WriteLine("Album removed");
+                return added;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while removing Album: " + ex.Message);
+            }
+            return added;
+        }
+
+        //make, update, remove, retreive TYPES WOTTTT
 
         //Disconnection method        
         public void Disconnect()
