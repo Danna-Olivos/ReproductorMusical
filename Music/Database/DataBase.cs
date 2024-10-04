@@ -219,6 +219,26 @@ namespace Database
                         }
                     }
                 }
+                if(id_performer == -1) //if its non existent
+                {
+                    Performer performerObj = new Performer(performerName, Type.ArtistType.Unknown);
+                    bool success = MakePerformer(performerObj);
+                    if(success)
+                    {
+                        query = "SELECT id_performer FROM performers WHERE name = @name LIMIT 1";
+                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@name", performerName);
+                            using (SQLiteDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    id_performer = reader.GetInt32(0); //new id_performer
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch(Exception ex)
             {
@@ -619,7 +639,7 @@ namespace Database
             return added;
         }
 
-        public int GetAlbumId(string albumName, int year)
+        public int GetAlbumId(string albumName, int year, string filePath)
         {
             int id_album = -1;
             try
@@ -638,6 +658,27 @@ namespace Database
                     }
                 }
             }
+            if(id_album == -1)
+                {
+                    Albums albumsObj = new Albums(filePath, albumName, year);
+                    bool success = MakeAlbums(albumsObj);
+                    if(success)
+                    {
+                        query = "SELECT id_album FROM albums WHERE name = @name AND year = @year LIMIT 1";
+                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@name", albumName);
+                            command.Parameters.AddWithValue("@year", year);
+                            using (SQLiteDataReader reader = command.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    id_album = reader.GetInt32(0); //new id_album
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch(Exception ex)
             {

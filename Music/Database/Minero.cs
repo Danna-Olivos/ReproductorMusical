@@ -9,7 +9,6 @@ namespace Database
     public class Minero 
     {
         public required string  Path{get;set;}
-        public List<Songs> songs = new(); // maybe delete(?)
         DataBase db = DataBase.Instance;
 
         public void Mine(string path)
@@ -27,7 +26,7 @@ namespace Database
                     Albums a = PopulateAlbums(filePath,album,year);
                     db.MakeAlbums(a);//inserting object into database
 
-                    var(id_performer, id_album) = GetLatterIDs(album,performer,year);
+                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,filePath);
                     Songs s = PopulateSongs(id_performer, id_album, filePath,title, track, year, genre);
                     db.MakeRolas(s);//inserting object into database
                     
@@ -71,10 +70,10 @@ namespace Database
             return songsObj;
         }
 
-        private (int idP, int idA) GetLatterIDs(string albumN, string performerN,int year)
+        private (int idP, int idA) GetLatterIDs(string albumN, string performerN,int year, string filepath)
         {
 
-            int idAl = db.GetAlbumId(albumN, year);
+            int idAl = db.GetAlbumId(albumN, year, filepath);
             int idPer = db.GetPerformerId(performerN);
 
             return (idPer, idAl);
