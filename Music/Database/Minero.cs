@@ -20,9 +20,16 @@ namespace Database
                 try
                 {
                     
-                    GetData(filePath); // getting data for each path in the directory
+                    var (performer,title,album,year,genre,track) = GetData(filePath); // getting data for each path in the directory
                     //making objects with extracted data for each path in the directory
-                    //inserting object into database
+                    Performer p = PopulatePerformer(performer);
+                    db.MakePerformer(p);//inserting object into database
+                    Albums a = PopulateAlbums(filePath,album,year);
+                    db.MakeAlbums(a);//inserting object into database
+
+                    var(id_performer, id_album) = GetLatterIDs(album,performer,year);
+                    Songs s = PopulateSongs(id_performer, id_album, filePath,title, track, year, genre);
+                    db.MakeRolas(s);//inserting object into database
                     
                 }
                 catch (Exception ex)
@@ -62,6 +69,15 @@ namespace Database
         {
             Songs songsObj = new Songs(id_performer, id_album, path, title, track, year, genre);
             return songsObj;
+        }
+
+        private (int idP, int idA) GetLatterIDs(string albumN, string performerN,int year)
+        {
+
+            int idAl = db.GetAlbumId(albumN, year);
+            int idPer = db.GetPerformerId(performerN);
+
+            return (idPer, idAl);
         }
 
     }

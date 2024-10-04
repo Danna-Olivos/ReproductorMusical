@@ -201,10 +201,31 @@ namespace Database
             return removed;
         }
 
-        // public Performer RetreivePerformer(string name)
-        // {
-        //     //luego vemos xd, hay que checar si se deben de indexar otras columnas para hacer las consultas
-        // }
+        public int GetPerformerId(string performerName)
+        {
+            int id_performer = -1;
+            try
+            {
+                string query = "SELECT id_performer FROM performers WHERE name = @name LIMIT 1";
+                
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", performerName);
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            id_performer = reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error occurred while fetching performer '{performerName}': {ex.Message}");
+            }
+            return id_performer;
+        }
 
         //make, update, remove, retreive PERSONS
         public bool MakePerson (Person person)
@@ -598,9 +619,36 @@ namespace Database
             return added;
         }
 
+        public int GetAlbumId(string albumName, int year)
+        {
+            int id_album = -1;
+            try
+            {
+            string query = "SELECT id_album FROM albums WHERE name = @name AND year = @year LIMIT 1";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@name", albumName);
+                command.Parameters.AddWithValue("@year", year);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        id_album = reader.GetInt32(0);
+                    }
+                }
+            }
+            }
+            catch(Exception ex)
+            {
+               Console.WriteLine($"Error occurred while fetching album '{albumName}' (year {year}): {ex.Message}"); 
+            }
+            return id_album;
+        }
+
         //make, update, remove, retreive TYPES WOTTTT
 
-        //Disconnection method        
+        //Disconnection db method        
         public void Disconnect()
         {
             if (connection != null && connection.State == System.Data.ConnectionState.Open)
