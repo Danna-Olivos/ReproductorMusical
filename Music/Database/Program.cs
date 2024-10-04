@@ -8,6 +8,8 @@ namespace Database{
         public static void Main(string[] args)
         {
         //checar que si te lleve a archivos .mp3
+
+            Application.Init();        
             Console.WriteLine("Creando la ventana...");
             Window window = new Window("Mi ventana GTK#");
 

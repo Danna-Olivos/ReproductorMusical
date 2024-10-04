@@ -1,0 +1,3 @@
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net7.0/Database.dll
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net7.0/refint/Database.dll
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net7.0/Database.pdb
