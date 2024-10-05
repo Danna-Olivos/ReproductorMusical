@@ -660,25 +660,22 @@ namespace Database
             }
             if(id_album == -1)
                 {
-                    Albums albumsObj = new Albums(filePath, albumName, year);
-                    bool success = MakeAlbums(albumsObj);
-                    if(success)
+                    using (SQLiteTransaction transaction = connection.BeginTransaction())
                     {
-                        query = "SELECT id_album FROM albums WHERE name = @name AND year = @year AND path = @path LIMIT 1";
-                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        Albums albumsObj = new Albums(filePath, albumName, year);
+                        bool success = MakeAlbums(albumsObj); 
+
+                        if (success)
                         {
-                            command.Parameters.AddWithValue("@name", albumName);
-                            command.Parameters.AddWithValue("@year", year);
-                            command.Parameters.AddWithValue("@path", filePath);
-                            using (SQLiteDataReader reader = command.ExecuteReader())
+                            query = "SELECT last_insert_rowid()";
+                            using (SQLiteCommand command = new SQLiteCommand(query, connection))
                             {
-                                if (reader.Read())
-                                {
-                                    id_album = reader.GetInt32(0); //new id_album
-                                }
+                                id_album = Convert.ToInt32(command.ExecuteScalar());
                             }
                         }
-                    }
+
+                        transaction.Commit();
+                    }  
                 }
             }
             catch(Exception ex)
