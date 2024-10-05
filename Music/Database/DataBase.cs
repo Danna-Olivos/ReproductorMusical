@@ -221,23 +221,22 @@ namespace Database
                 }
                 if(id_performer == -1) //if its non existent
                 {
-                    Performer performerObj = new Performer(performerName, Type.ArtistType.Unknown);
-                    bool success = MakePerformer(performerObj);
-                    if(success)
+                    using (SQLiteTransaction transaction = connection.BeginTransaction())
                     {
-                        query = "SELECT id_performer FROM performers WHERE name = @name LIMIT 1";
-                        using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                        Performer performerObj = new Performer(performerName, Type.ArtistType.Unknown);
+                        bool success = MakePerformer(performerObj); 
+
+                        if (success)
                         {
-                            command.Parameters.AddWithValue("@name", performerName);
-                            using (SQLiteDataReader reader = command.ExecuteReader())
+                            query = "SELECT last_insert_rowid()";
+                            using (SQLiteCommand command = new SQLiteCommand(query, connection))
                             {
-                                if (reader.Read())
-                                {
-                                    id_performer = reader.GetInt32(0); //new id_performer
-                                }
+                                id_performer = Convert.ToInt32(command.ExecuteScalar());
                             }
                         }
-                    }
+
+                        transaction.Commit();
+                    }    
                 }
             }
             catch(Exception ex)
