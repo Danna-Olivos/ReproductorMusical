@@ -60,7 +60,7 @@ namespace Database
             CREATE TABLE performers (
                 id_performer INTEGER PRIMARY KEY,
                 id_type INTEGER,
-                name TEXT,
+                name TEXT UNIQUE,
                 FOREIGN KEY (id_type) REFERENCES types(id_type)
             );
 
@@ -89,7 +89,7 @@ namespace Database
 
             CREATE TABLE albums (
                 id_album INTEGER PRIMARY KEY,
-                path TEXT,
+                path TEXT UNIQUE,
                 name TEXT,
                 year INTEGER
             );
@@ -644,12 +644,13 @@ namespace Database
             int id_album = -1;
             try
             {
-            string query = "SELECT id_album FROM albums WHERE name = @name AND year = @year LIMIT 1";
+            string query = "SELECT id_album FROM albums WHERE name = @name AND year = @year AND path = @path LIMIT 1";
             
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@name", albumName);
                 command.Parameters.AddWithValue("@year", year);
+                command.Parameters.AddWithValue("@path", filePath);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -664,11 +665,12 @@ namespace Database
                     bool success = MakeAlbums(albumsObj);
                     if(success)
                     {
-                        query = "SELECT id_album FROM albums WHERE name = @name AND year = @year LIMIT 1";
+                        query = "SELECT id_album FROM albums WHERE name = @name AND year = @year AND path = @path LIMIT 1";
                         using (SQLiteCommand command = new SQLiteCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@name", albumName);
                             command.Parameters.AddWithValue("@year", year);
+                            command.Parameters.AddWithValue("@path", filePath);
                             using (SQLiteDataReader reader = command.ExecuteReader())
                             {
                                 if (reader.Read())
