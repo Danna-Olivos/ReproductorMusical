@@ -8,7 +8,7 @@ namespace Database
 {
     public class Minero 
     {
-        public required string  Path{get;set;}
+        public string? Path{get;set;}
         DataBase db = DataBase.Instance;
 
         public void Mine(string path)
@@ -23,6 +23,7 @@ namespace Database
                     //making objects with extracted data for each path in the directory
                     Performer p = PopulatePerformer(performer);
                     db.MakePerformer(p);//inserting object into database
+                    
                     Albums a = PopulateAlbums(filePath,album,year);
                     db.MakeAlbums(a);//inserting object into database
 

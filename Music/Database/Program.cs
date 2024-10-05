@@ -7,22 +7,9 @@ namespace Database{
     {
         public static void Main(string[] args)
         {
-        //checar que si te lleve a archivos .mp3
-
-            Application.Init();        
-            Console.WriteLine("Creando la ventana...");
-            Window window = new Window("Mi ventana GTK#");
-
-            Console.WriteLine("Configurando la ventana...");
-            window.SetDefaultSize(400, 300);
-            window.SetPosition(WindowPosition.Center);
-
-            Console.WriteLine("Mostrando la ventana...");
-            window.ShowAll();
-
-            Console.WriteLine("Iniciando el ciclo de eventos...");
-            Application.Run();
-
+            string path = "/home/dannaabigailolivosnoriega/Documentos/Bruno Mars";
+            Minero miner = new Minero(); 
+            miner.Mine(path);
         }
     }
 }

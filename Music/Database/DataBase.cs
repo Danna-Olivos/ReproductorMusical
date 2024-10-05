@@ -10,11 +10,11 @@ namespace Database
         private SQLiteConnection connection{get;set;}
 
         //creating database
-        private DataBase()
+        private DataBase() 
         {
-            string dataPath = "./Music/Database/Data/MyMusic.db";
+            string dataPath = "./Database/Data/MyMusic.db";
             bool dataExists = File.Exists(dataPath);
-            string connectionString = $"Source={dataPath};Version=3;";
+            string connectionString = $"Data Source={dataPath};Version=3;";
            
             connection = new SQLiteConnection(connectionString);
             connection.Open();
