@@ -7,7 +7,7 @@ namespace Database{
     {
         public static void Main(string[] args)
         {
-            string path = "/home/dannaabigailolivosnoriega/Documentos/Prueba";
+            string path = "/home/dannaabigailolivosnoriega/Documentos/BrunoMars";
             Minero miner = new Minero(); 
             miner.Mine(path);
         }

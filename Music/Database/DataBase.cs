@@ -643,12 +643,10 @@ namespace Database
             int id_album = -1;
             try
             {
-            string query = "SELECT id_album FROM albums WHERE name = @name AND year = @year AND path = @path LIMIT 1";
+            string query = "SELECT id_album FROM albums WHERE path = @path LIMIT 1";
             
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
-                command.Parameters.AddWithValue("@name", albumName);
-                command.Parameters.AddWithValue("@year", year);
                 command.Parameters.AddWithValue("@path", filePath);
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {

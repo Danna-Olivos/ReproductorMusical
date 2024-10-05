@@ -18,16 +18,16 @@ namespace Database
             {
                 try
                 {
-                    
+                    var albumDirectory = System.IO.Path.GetDirectoryName(filePath);
                     var (performer,title,album,year,genre,track) = GetData(filePath); // getting data for each path in the directory
                     //making objects with extracted data for each path in the directory
                     Performer p = PopulatePerformer(performer);
                     db.MakePerformer(p);//inserting object into database
                     
-                    Albums a = PopulateAlbums(filePath,album,year);
+                    Albums a = PopulateAlbums(albumDirectory,album,year);
                     db.MakeAlbums(a);//inserting object into database
 
-                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,filePath);
+                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,albumDirectory);
                     Songs s = PopulateSongs(id_performer, id_album, filePath,title, track, year, genre);
                     db.MakeRolas(s);//inserting object into database
                     
@@ -71,11 +71,11 @@ namespace Database
             return songsObj;
         }
 
-        private (int idP, int idA) GetLatterIDs(string albumN, string performerN,int year, string filepath)
+        private (int idP, int idA) GetLatterIDs(string albumN, string performerN,int year, string albumPath)
         {
 
-            int idAl = db.GetAlbumId(albumN, year, filepath);
             int idPer = db.GetPerformerId(performerN);
+            int idAl = db.GetAlbumId(albumN, year, albumPath);
 
             return (idPer, idAl);
         }
