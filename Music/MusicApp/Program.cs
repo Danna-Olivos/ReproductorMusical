@@ -4,60 +4,36 @@ using System.IO;
 
 namespace MusicApp 
 {
-   class Program
+    class Program
     {
+
+    // private static void ApplyCss(Widget widget)
+    // {
+    //     // Create a CssProvider and load CSS rules
+    //     CssProvider cssProvider = new CssProvider();
+    //     cssProvider.LoadFromData(
+    //         @"
+    //         button {
+    //             background-color: #3498db;
+    //             color: white;
+    //             font-size: 16px;
+    //             border-radius: 10px;
+    //             padding: 10px;
+    //         }
+    //         button:hover {
+    //             background-color: #2980b9;
+    //         }
+    //         "
+    //     );
+
+    //     //Get the widget's StyleContext and apply the CSSProvider
+    //     StyleContext styleContext = widget.StyleContext;
+    //     styleContext.AddProvider(cssProvider, Gtk.StyleProviderPriority.User);
+    // }
         public static void Main(string[] args)
         {
-            // // Initialize the GTK application
-            // Application.Init();
-
-            // // Create the main window
-            // Window window = new Window("Simple GTK# App");
-            // window.SetDefaultSize(400, 200); // Set the default size of the window
-            // window.SetPosition(WindowPosition.Center); // Center the window on the screen
-
-            // // Connect the destroy event to close the application when the window is closed
-            // window.Destroyed += (sender, e) =>
-            // {
-            //     Application.Quit();
-            // };
-
-            // // Create a vertical box layout container
-            // Box vbox = new Box(Orientation.Vertical, 5);
-
-            // // Create a label and add it to the vbox
-            // Label label = new Label("Welcome to the Simple GTK# App!");
-            // vbox.PackStart(label, false, false, 0);
-
-            // // Create a button with a label
-            // Button button = new Button("Click Me");
-            // // Connect the button's clicked event to an event handler
-            // button.Clicked += (sender, e) =>
-            // {
-            //     // Display a message when the button is clicked
-            //     MessageDialog dialog = new MessageDialog(
-            //         window,
-            //         DialogFlags.Modal,
-            //         MessageType.Info,
-            //         ButtonsType.Ok,
-            //         "Hello from GTK#!"
-            //     );
-            //     dialog.Run();
-            //     dialog.Destroy(); // Close the dialog after it runs
-            // };
-
-            // // Add the button to the vbox
-            // vbox.PackStart(button, false, false, 0);
-
-            // // Add the vbox to the window
-            // window.Add(vbox);
-
-            // // Show all widgets in the window
-            // window.ShowAll();
-
-            // // Start the GTK application event loop
-            // Application.Run();
-         Application.Init();
+  
+            Application.Init();
 
             // Main window
             Window window = new Window("CapyMusica");
@@ -65,6 +41,11 @@ namespace MusicApp
             window.SetPosition(WindowPosition.Center);
             window.Destroyed += (sender, e) => Application.Quit();
 
+              var cssProvider = new Gtk.CssProvider();
+            cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
+            Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, Gtk.StyleProviderPriority.User);
+
+            //ApplyCss(window);
             // Main container (Vertical Box)
             Box mainContainer = new Box(Orientation.Vertical, 5);
             window.Add(mainContainer);
@@ -73,9 +54,19 @@ namespace MusicApp
             Box topSection = new Box(Orientation.Horizontal, 5);
             mainContainer.PackStart(topSection, false, false, 0);
 
-            // Song Image placeholder
-            Image songImage = new Image("placeholder.png");  // Load placeholder image
+            // Create the image widget
+            var songImage = new Gtk.Image();
+
+            // Load the image from file
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/AlbumCovers/perritos.jpg");
+
+            // Scale the image to a fixed size (e.g., 150x150)
+            Gdk.Pixbuf scaledPixbuf = pixbuf.ScaleSimple(180, 180, Gdk.InterpType.Bilinear);
+
+            // Set the scaled image
+            songImage.Pixbuf = scaledPixbuf;
             topSection.PackStart(songImage, false, false, 0);
+
 
             // Song Info section (Vertical Box for song title and details)
             Box songInfoBox = new Box(Orientation.Vertical, 5);
@@ -91,6 +82,7 @@ namespace MusicApp
             // Edit Button
             Button editButton = new Button("Edit");
             songInfoBox.PackStart(editButton, false, false, 0);
+            //ApplyCss(editButton);
 
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
@@ -140,6 +132,7 @@ namespace MusicApp
             Application.Run();
 
         }
+
     } 
 }
 
