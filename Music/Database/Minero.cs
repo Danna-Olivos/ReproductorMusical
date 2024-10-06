@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Pango;
 using TagLib;
 //this class retrieves information 
 
