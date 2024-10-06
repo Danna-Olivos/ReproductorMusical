@@ -1,7 +1,7 @@
 /* General Window Styling */
 window {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
+    background-color: #231f42;
+    border: 1px solid #231f42;
     padding: 10px;
 }
 
@@ -10,43 +10,47 @@ entry {
     font-size: 14px;
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #aaa;
-    background-color: #ffffff;
-    color: #333333;
+    border: 1px solid #231f42;
+    background-color: #2d3160;
+    color: #fefefe;
 }
 
 entry:focus {
-    border-color: #007acc;
+    border-color: #00406b;
 }
 
 /* TreeView styling (song list table) */
 treeview {
-    background-color: #ffffff;
-    border: 1px solid #ccc;
+    background-color: #2d3160;
+    border: 1px solid #231f42;
+    padding: 0;
+    margin: 0;
 }
 
 treeview row:selected {
-    background-color: #d0eaff;
+    background-color: #f9a1d4;
 }
 
 treeview header {
     font-weight: bold;
-    background-color: #e0e0e0;
+    background-color: #2d3160;
+    color: white;
     padding: 5px;
-    border-bottom: 1px solid #bbb;
+    border-bottom: 1px solid #2d3160;
 }
+
 
 /* Image styling (song/album art) */
 image {
-    border: 1px solid #ccc;
+    border: 1px solid #231f42;
     padding: 5px;
-    background-color: #e0f7ff;
+    background-color: #231f42;
 }
 
 /* Button styling (play, pause, etc.) */
 button {
-    background-color: #0099ff;
-    color: white;
+    background-color: #2d3160;
+    color: #2d3160;
     padding: 10px;
     font-size: 12px;
     border-radius: 5px;
@@ -64,13 +68,13 @@ button:active {
 
 /* Slider (volume or progress bar) */
 hscale {
-    background-color: #f0f0f0;
+    background-color: #2d3160;
     padding: 5px;
     border-radius: 5px;
 }
 
 hscale trough {
-    background-color: #cccccc;
+    background-color: #2d3160;
 }
 
 hscale slider {
@@ -81,7 +85,7 @@ hscale slider {
 /* Labels (like the song title or search result headers) */
 label {
     font-size: 14px;
-    color: #333;
+    color: #ffffff;
     padding: 5px;
 }
 

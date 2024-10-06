@@ -6,30 +6,6 @@ namespace MusicApp
 {
     class Program
     {
-
-    // private static void ApplyCss(Widget widget)
-    // {
-    //     // Create a CssProvider and load CSS rules
-    //     CssProvider cssProvider = new CssProvider();
-    //     cssProvider.LoadFromData(
-    //         @"
-    //         button {
-    //             background-color: #3498db;
-    //             color: white;
-    //             font-size: 16px;
-    //             border-radius: 10px;
-    //             padding: 10px;
-    //         }
-    //         button:hover {
-    //             background-color: #2980b9;
-    //         }
-    //         "
-    //     );
-
-    //     //Get the widget's StyleContext and apply the CSSProvider
-    //     StyleContext styleContext = widget.StyleContext;
-    //     styleContext.AddProvider(cssProvider, Gtk.StyleProviderPriority.User);
-    // }
         public static void Main(string[] args)
         {
   
@@ -41,11 +17,10 @@ namespace MusicApp
             window.SetPosition(WindowPosition.Center);
             window.Destroyed += (sender, e) => Application.Quit();
 
-              var cssProvider = new Gtk.CssProvider();
+            var cssProvider = new Gtk.CssProvider();
             cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
             Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, Gtk.StyleProviderPriority.User);
 
-            //ApplyCss(window);
             // Main container (Vertical Box)
             Box mainContainer = new Box(Orientation.Vertical, 5);
             window.Add(mainContainer);
@@ -60,8 +35,8 @@ namespace MusicApp
             // Load the image from file
             Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/AlbumCovers/perritos.jpg");
 
-            // Scale the image to a fixed size (e.g., 150x150)
-            Gdk.Pixbuf scaledPixbuf = pixbuf.ScaleSimple(180, 180, Gdk.InterpType.Bilinear);
+            // Scale the image to a fixed size
+            Gdk.Pixbuf scaledPixbuf = pixbuf.ScaleSimple(250, 250, Gdk.InterpType.Bilinear);
 
             // Set the scaled image
             songImage.Pixbuf = scaledPixbuf;
@@ -82,7 +57,6 @@ namespace MusicApp
             // Edit Button
             Button editButton = new Button("Edit");
             songInfoBox.PackStart(editButton, false, false, 0);
-            //ApplyCss(editButton);
 
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
@@ -99,17 +73,19 @@ namespace MusicApp
             Label resultsLabel = new Label("Resultados de busqueda");
             mainContainer.PackStart(resultsLabel, false, false, 0);
 
-            // Song List (ListBox or TreeView)
-            ListBox songList = new ListBox();
-            for (int i = 1; i <= 4; i++)
-            {
-                ListBoxRow row = new ListBoxRow();
-                Label songLabel = new Label($"song {i}");
-                row.Add(songLabel);
-                songList.Add(row);
-            }
-            songList.SelectRow((ListBoxRow)songList.Children[2]); // Select the third song by default
-            mainContainer.PackStart(songList, true, true, 0);
+            //songList
+            var scrolledWindow = new ScrolledWindow();
+            var treeView = new TreeView();  // Table
+            var songList = new ListStore(typeof(string),typeof(string));
+            songList.AppendValues("Song 1", "Artist 1");
+            songList.AppendValues("Song 2", "Artist 2");
+            songList.AppendValues("Song 3", "Artist 3");
+
+            treeView.Model = songList;
+
+            AddTreeViewColumns(treeView);
+            scrolledWindow.Add(treeView);
+            mainContainer.PackStart(scrolledWindow, true, true, 5);
 
             // Slider (Volume or Progress)
             Scale progressSlider = new Scale(Orientation.Horizontal, 0, 100, 1);
@@ -118,7 +94,7 @@ namespace MusicApp
 
             // Playback Control Buttons (Horizontal Box)
             Box controlBox = new Box(Orientation.Horizontal, 5);
-            string[] buttonLabels = { "<<", "<", "||", ">", ">>" };
+            string[] buttonLabels = {"\u25B6"}; //pausa \u23F8 "\u2190", "\u2192"
             foreach (var label in buttonLabels)
             {
                 Button controlButton = new Button(label);
@@ -133,6 +109,22 @@ namespace MusicApp
 
         }
 
+        private static void AddTreeViewColumns(TreeView treeView)
+        {
+            // Column 1: Song Title
+            TreeViewColumn titleColumn = new TreeViewColumn { Title = "Title" };
+            CellRendererText titleCell = new CellRendererText();
+            titleColumn.PackStart(titleCell, true);
+            titleColumn.AddAttribute(titleCell, "text", 0); // The first column in the ListStore is at index 0
+            treeView.AppendColumn(titleColumn);
+
+            // Column 2: Artist
+            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Artist" };
+            CellRendererText artistCell = new CellRendererText();
+            artistColumn.PackStart(artistCell, true);
+            artistColumn.AddAttribute(artistCell, "text", 1); // The second column in the ListStore is at index 1
+            treeView.AppendColumn(artistColumn);
+        }
     } 
 }
 
