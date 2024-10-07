@@ -79,5 +79,23 @@ namespace Database
             return (idPer, idAl);
         }
 
+        // private void GetSongCover (string filePath)
+        // {
+        //     var file = TagLib.File.Create(filePath);
+        //     if(file.Tag.Pictures.Length > 0)
+        //     {
+        //         var art = file.Tag.Pictures[0];
+
+        //         string outputFilePath = "";
+        //         using(var stream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
+        //         {
+        //             stream.Write(art.Data.Data, 0, art.Data.Data.Length);
+        //         }
+        //     }
+        //     else{
+
+        //     }
+        // }
+
     }
 }

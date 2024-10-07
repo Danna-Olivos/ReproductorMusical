@@ -35,10 +35,7 @@ treeview header {
     font-weight: bold;
     background-color: #2d3160;
     color: white;
-    padding: 5px;
-    border-bottom: 1px solid #2d3160;
 }
-
 
 /* Image styling (song/album art) */
 image {
@@ -51,8 +48,8 @@ image {
 button {
     background-color: #2d3160;
     color: #2d3160;
-    padding: 10px;
-    font-size: 12px;
+    padding: 5px;
+    font-size: 5px;
     border-radius: 5px;
     margin: 5px;
     border: none;
@@ -67,18 +64,18 @@ button:active {
 }
 
 /* Slider (volume or progress bar) */
-hscale {
-    background-color: #2d3160;
+scale {
+    background-color: #231f42;
     padding: 5px;
     border-radius: 5px;
 }
 
-hscale trough {
-    background-color: #2d3160;
+scale trough {
+    background-color: #f6a3a3;
 }
 
-hscale slider {
-    background-color: #007acc;
+scale slider {
+    background-color: #231f42;
     border-radius: 50%;
 }
 
@@ -92,7 +89,7 @@ label {
 label.header {
     font-size: 16px;
     font-weight: bold;
-    color: #007acc;
+    color: #231f42;
     padding-bottom: 5px;
 }
 
