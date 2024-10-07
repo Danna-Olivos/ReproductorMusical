@@ -1,12 +1,13 @@
 ﻿using System;
 using Gtk;
 using System.IO;
+using ControllerApp;
 
 namespace MusicApp 
 {
     class Program
     {
-        //public controller = new controller();
+        public Controller controller = new Controller();
         public static void Main(string[] args)
         {
   

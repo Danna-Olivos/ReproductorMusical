@@ -2,7 +2,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
-    <ProjectReference Include="..\MusicApp\MusicApp.csproj" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+    <PackageReference Include="taglibsharp" Version="2.3.0" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
   </ItemGroup>
 
   <PropertyGroup>
