@@ -1,7 +1,6 @@
 ﻿using System;
 using Gtk;
 using System.IO;
-using ControllerApp;
 
 namespace MusicApp 
 {

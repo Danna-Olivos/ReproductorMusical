@@ -1,0 +1,15 @@
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/bin/Debug/net8.0/Database.deps.json
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/bin/Debug/net8.0/Database.runtimeconfig.json
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/bin/Debug/net8.0/Database.dll
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/bin/Debug/net8.0/Database.pdb
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.csproj.AssemblyReference.cache
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.GeneratedMSBuildEditorConfig.editorconfig
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.AssemblyInfoInputs.cache
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.AssemblyInfo.cs
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.csproj.CoreCompileInputs.cache
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.sourcelink.json
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.dll
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/refint/Database.dll
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.pdb
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/Database.genruntimeconfig.cache
+/home/dannaabigailolivosnoriega/ReproductorMusical/Music/Database/obj/Debug/net8.0/ref/Database.dll
