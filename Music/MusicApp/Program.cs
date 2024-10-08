@@ -4,15 +4,15 @@ using System.IO;
 
 namespace MusicApp 
 {
-    class Program
+    public class Program
     {
-        public Controller controller = new Controller();
+        public static Controller methods = new Controller();
         public static void Main(string[] args)
         {
   
             Application.Init();
 
-            var cssProvider = new Gtk.CssProvider();
+            var cssProvider = new CssProvider();
             cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, StyleProviderPriority.User);
             
@@ -53,9 +53,10 @@ namespace MusicApp
             Button editButton = new Button("\u270E");
             songInfoBox.PackStart(editButton, false, false, 0);
 
-            Button mineButton = new Button("Agrega canciones");
-            songInfoBox.PackStart(mineButton, false, false, 0);
-            mineButton.Clicked += (sender, e) =>
+            //Button for changing paths
+            Button pathButton = new Button("Cambiar directorio");
+            songInfoBox.PackStart(pathButton, false, false, 0);
+            pathButton.Clicked += (sender, e) =>
             {
                 Dialog dialog = new Dialog(
                     "Directorio Musica",
@@ -71,9 +72,17 @@ namespace MusicApp
                 {
                     string userInput = entry.Text;
 
-                    //Para que mine xd
+                    //Metodo para cambiar path de controller
                 }
                 dialog.Destroy();
+            };
+
+            //Button for mining
+            Button mineButton = new Button("Minar");
+            songInfoBox.PackStart(mineButton,false,false,0);
+            mineButton.Clicked += (sender, e) =>
+            {
+                methods.Mining();   
             };
 
             // Search Section (Search Entry and Button)

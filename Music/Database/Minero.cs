@@ -7,7 +7,6 @@ namespace Database
 {
     public class Minero 
     {
-        public string? Path{get;set;}
         DataBase db = DataBase.Instance;
 
         public void Mine(string path)
@@ -17,16 +16,16 @@ namespace Database
             {
                 try
                 {
-                    var albumDirectory = System.IO.Path.GetDirectoryName(filePath);
+                    var albumDirectory = Path.GetDirectoryName(filePath);
                     var (performer,title,album,year,genre,track) = GetData(filePath); // getting data for each path in the directory
                     //making objects with extracted data for each path in the directory
                     Performer p = PopulatePerformer(performer);
                     db.MakePerformer(p);//inserting object into database
                     
-                    Albums a = PopulateAlbums(albumDirectory,album,year);
+                    Albums a = PopulateAlbums(filePath,album,year);
                     db.MakeAlbums(a);//inserting object into database
 
-                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,albumDirectory);
+                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,filePath);
                     Songs s = PopulateSongs(id_performer, id_album, filePath,title, track, year, genre);
                     db.MakeRolas(s);//inserting object into database
                     

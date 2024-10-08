@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MusicApp", "MusicApp\MusicA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{90E8741A-8D72-463E-B346-1A917EC90DEE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controller", "Controller\Controller.csproj", "{388F87B3-3862-4787-AA62-FD08AE63104D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +24,5 @@ Global
 		{90E8741A-8D72-463E-B346-1A917EC90DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90E8741A-8D72-463E-B346-1A917EC90DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90E8741A-8D72-463E-B346-1A917EC90DEE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{388F87B3-3862-4787-AA62-FD08AE63104D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{388F87B3-3862-4787-AA62-FD08AE63104D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{388F87B3-3862-4787-AA62-FD08AE63104D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{388F87B3-3862-4787-AA62-FD08AE63104D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

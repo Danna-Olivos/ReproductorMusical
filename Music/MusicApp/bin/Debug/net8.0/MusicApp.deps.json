@@ -8,8 +8,10 @@
     ".NETCoreApp,Version=v8.0": {
       "MusicApp/1.0.0": {
         "dependencies": {
-          "Controller": "1.0.0",
-          "GtkSharp": "3.24.24.95"
+          "Database": "1.0.0",
+          "GtkSharp": "3.24.24.95",
+          "System.Data.SQLite": "1.0.119",
+          "TagLibSharp": "2.3.0"
         },
         "runtime": {
           "MusicApp.dll": {}
@@ -363,20 +365,6 @@
           }
         }
       },
-      "Controller/1.0.0": {
-        "dependencies": {
-          "Database": "1.0.0",
-          "GtkSharp": "3.24.24.95",
-          "System.Data.SQLite": "1.0.119",
-          "TagLibSharp": "2.3.0"
-        },
-        "runtime": {
-          "Controller.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
-      },
       "Database/1.0.0": {
         "dependencies": {
           "System.Data.SQLite": "1.0.119",
@@ -613,11 +601,6 @@
       "sha512": "sha512-Qo4z6ZjnIfbR3Us1Za5M2vQ97OWZPmODvVmepxZ8XW0UIVLGdO2T63/N3b23kCcyiwuIe0TQvMEQG8wUCCD1mA==",
       "path": "taglibsharp/2.3.0",
       "hashPath": "taglibsharp.2.3.0.nupkg.sha512"
-    },
-    "Controller/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Database/1.0.0": {
       "type": "project",

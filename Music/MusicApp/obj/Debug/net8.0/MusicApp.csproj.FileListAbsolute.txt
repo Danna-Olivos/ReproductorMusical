@@ -37,9 +37,7 @@
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
-/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/Controller.dll
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/Database.dll
-/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/Controller.pdb
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/bin/Debug/net8.0/Database.pdb
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/obj/Debug/net8.0/MusicApp.csproj.AssemblyReference.cache
 /home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/obj/Debug/net8.0/MusicApp.GeneratedMSBuildEditorConfig.editorconfig
