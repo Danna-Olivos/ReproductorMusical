@@ -8,27 +8,52 @@ namespace Database
     {
         private static DataBase? instance = null;
         private SQLiteConnection connection{get;set;}
+        private static readonly string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CapyMusica", "MyMusic.db");
+
 
         //creating database
-        private DataBase() 
+        private DataBase(string path) 
         {
-            string dataPath = "./Database/Data/MyMusic.db";
-            bool dataExists = File.Exists(dataPath);
-            string connectionString = $"Data Source={dataPath};Version=3;";
+            // string dataPath = "./Database/Data/MyMusic.db";
+            // bool dataExists = File.Exists(dataPath);
+            // string connectionString = $"Data Source={dataPath};Version=3;";
            
+            // connection = new SQLiteConnection(connectionString);
+            // connection.Open();
+            // Console.WriteLine("Connection is now opened");
+
+            // using (var command = new SQLiteCommand("PRAGMA foreign_keys = ON;", connection))
+            // {
+            //     command.ExecuteNonQuery();
+            // }
+            
+            // if (!dataExists)
+            // {
+            //     CreateTables();
+            // }
+            string? dataPath = Path.GetDirectoryName(path);
+            if (path != ":memory:" && dataPath != null && !Directory.Exists(dataPath))
+            {
+                Directory.CreateDirectory(dataPath);
+                Console.WriteLine($"Directory '{dataPath}' created.");
+            }
+
+            bool dataExists = File.Exists(path);
+            string connectionString = $"Data Source={path};Version=3;";
+
             connection = new SQLiteConnection(connectionString);
             connection.Open();
-            Console.WriteLine("Connection is now opened");
+            Console.WriteLine("Database connection open");
 
             using (var command = new SQLiteCommand("PRAGMA foreign_keys = ON;", connection))
             {
                 command.ExecuteNonQuery();
             }
-            
+
             if (!dataExists)
             {
                 CreateTables();
-            }
+            } 
         }
 
         //singleton to ensure only one database
@@ -38,7 +63,7 @@ namespace Database
             {
                 if(instance == null)
                 {
-                    instance = new DataBase();
+                    instance = new DataBase(defaultPath);
                 }
                 return instance;
             }

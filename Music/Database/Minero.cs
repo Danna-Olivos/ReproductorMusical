@@ -22,10 +22,10 @@ namespace Database
                     Performer p = PopulatePerformer(performer);
                     db.MakePerformer(p);//inserting object into database
                     
-                    Albums a = PopulateAlbums(filePath,album,year);
+                    Albums a = PopulateAlbums(albumDirectory,album,year);
                     db.MakeAlbums(a);//inserting object into database
 
-                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,filePath);
+                    var(id_performer, id_album) = GetLatterIDs(album,performer,year,albumDirectory);
                     Songs s = PopulateSongs(id_performer, id_album, filePath,title, track, year, genre);
                     db.MakeRolas(s);//inserting object into database
                     

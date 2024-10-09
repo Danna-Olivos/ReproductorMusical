@@ -18,7 +18,7 @@ namespace MusicApp
             
             // Main window
             Window window = new Window("CapyMusica");
-            window.SetDefaultSize(600, 400);
+            window.SetDefaultSize(1000, 800);
             window.SetPosition(WindowPosition.Center);
             window.Destroyed += (sender, e) => Application.Quit();
 
@@ -62,7 +62,7 @@ namespace MusicApp
                     "Directorio Musica",
                     window,
                     DialogFlags.Modal,
-                    ButtonsType.Ok
+                    ButtonsType.OkCancel
                 );
                 Entry entry = new Entry();
                 entry.PlaceholderText = "Introduce la ubicacion de tu musica";
@@ -71,8 +71,30 @@ namespace MusicApp
                 if (dialog.Run() == (int)ResponseType.Ok)
                 {
                     string userInput = entry.Text;
-
-                    //Metodo para cambiar path de controller
+                    if(methods.ChangePath(userInput) == true)
+                    {
+                        MessageDialog okay = new MessageDialog(
+                            window,
+                            DialogFlags.Modal,
+                            MessageType.Info,
+                            ButtonsType.Ok,
+                            "Haz cambiado de directorio"
+                        );
+                        okay.Run();
+                        okay.Destroy();
+                    }
+                    else
+                    {
+                        MessageDialog error = new MessageDialog(
+                            window,
+                            DialogFlags.Modal,
+                            MessageType.Error,
+                            ButtonsType.Ok,
+                            "El directorio que ingresaste no existe"
+                        );
+                        error.Run();
+                        error.Destroy();
+                    }
                 }
                 dialog.Destroy();
             };
@@ -82,7 +104,7 @@ namespace MusicApp
             songInfoBox.PackStart(mineButton,false,false,0);
             mineButton.Clicked += (sender, e) =>
             {
-                methods.Mining();   
+                methods.startMining();   
             };
 
             // Search Section (Search Entry and Button)
