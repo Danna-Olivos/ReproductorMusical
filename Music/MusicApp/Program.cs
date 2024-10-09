@@ -122,8 +122,7 @@ namespace MusicApp
 
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
-            Button searchButton = new Button();
-            searchButton.Add(new Image("\u1F50E", IconSize.Menu));  // Search icon
+            Button searchButton = new Button("\u1F50D");
 
             Box searchBox = new Box(Orientation.Horizontal, 5);
             searchBox.PackStart(searchEntry, true, true, 0);

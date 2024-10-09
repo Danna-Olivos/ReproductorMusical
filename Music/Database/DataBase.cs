@@ -254,6 +254,30 @@ namespace Database
             return id_performer;
         }
 
+        public List<Performer> ListPerformers()
+        {
+            List<Performer> performers = new List<Performer>();
+            string query = "SELECT * FROM performers";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idPerformer = reader.GetInt32(0);
+                        int idType = reader.GetInt32(1);
+                        string name = reader.GetString(2);
+                        
+                        Performer performer = new Performer(idPerformer, name, (Type.ArtistType)idType);
+                        performers.Add(performer);
+                    }
+                }
+            }
+            
+            return performers;
+        }
+
         //make, update, remove, retreive PERSONS
         public bool MakePerson (Person person)
         {
@@ -344,6 +368,32 @@ namespace Database
             return added;
         }
 
+        public List<Person> ListPersons()
+        {
+            List<Person> persons = new List<Person>();
+            string query = "SELECT * FROM persons";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idPerson = reader.GetInt32(0);
+                        string StageName = reader.GetString(1);
+                        string RealName = reader.GetString(2);
+                        string BirthDate = reader.GetString(3);
+                        string DeathDate = reader.GetString(4);
+                        
+                        Person performer = new Person(idPerson,StageName,RealName,BirthDate,DeathDate);
+                        persons.Add(performer);
+                    }
+                }
+            }
+            
+            return persons;
+        }
+
         //make, update, remove, retreive GROUPS
         public bool MakeGroup (Group group)
         {
@@ -430,6 +480,30 @@ namespace Database
                 Console.WriteLine("Error while removing Group: " + ex.Message);
             }
             return added;
+        }
+
+        public List<Group> ListGroups()
+        {
+            List<Group> groups = new List<Group>();
+            string query = "SELECT * FROM groups";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idGroup = reader.GetInt32(0);
+                        string groupName = reader.GetString(1);
+                        string startDate = reader.GetString(2);
+                        string endDate = reader.GetString(3);
+                        
+                        Group gro = new Group(idGroup, groupName,startDate, endDate);
+                        groups.Add(gro);
+                    }
+                }
+            }
+            return groups;
         }
 
         //make, update, remove, retreive ROLAS
@@ -528,6 +602,33 @@ namespace Database
             return added;
         }
 
+        public List<Songs> ListSongs()
+        {
+            List<Songs> songs = new List<Songs>();
+            string query = "SELECT * FROM rolas";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idsong = reader.GetInt32(0);
+                        int idPerformer = reader.GetInt32(1);
+                        int idAlbum = reader.GetInt32(2);
+                        string path = reader.GetString(3);
+                        string title = reader.GetString(4);
+                        int track = reader.GetInt32(5);
+                        int year = reader.GetInt32(6);
+                        string genre = reader.GetString(7); 
+                        
+                        Songs rolas = new Songs(idsong, idPerformer,idAlbum,path,title,track,year,genre);
+                        songs.Add(rolas);
+                    }
+                }
+            }
+            return songs;
+        }
         //make, update, remove, retreive IN_GROUP WOTTTTT
         public bool MakeInGroup (InGroup inG)
         {
@@ -689,6 +790,31 @@ namespace Database
                Console.WriteLine($"Error occurred while fetching album '{albumName}' (year {year}): {ex.Message}"); 
             }
             return id_album;
+        }
+
+        public List<Albums> ListAlbums()
+        {
+            List<Albums> songs = new List<Albums>();
+            string query = "SELECT * FROM rolas";
+            
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idAlbum = reader.GetInt32(0);
+                        string path = reader.GetString(1);
+                        string name = reader.GetString(2);
+                        int year = reader.GetInt32(3);
+
+                        
+                        Albums al = new Albums(idAlbum,path,name,year);
+                        songs.Add(al);
+                    }
+                }
+            }
+            return songs;
         }
 
         //make, update, remove, retreive TYPES WOTTTT
