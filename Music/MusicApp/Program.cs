@@ -12,9 +12,9 @@ namespace MusicApp
   
             Application.Init();
 
-            var cssProvider = new CssProvider();
-            cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
-            StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, StyleProviderPriority.User);
+            // var cssProvider = new CssProvider();
+            // cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
+            // StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, StyleProviderPriority.User);
             
             // Main window
             Window window = new Window("CapyMusica");
@@ -62,12 +62,25 @@ namespace MusicApp
                     "Directorio Musica",
                     window,
                     DialogFlags.Modal,
-                    ButtonsType.OkCancel
+                    ButtonsType.None
                 );
+                dialog.SetDefaultSize(1000, 10);
+
                 Entry entry = new Entry();
-                entry.PlaceholderText = "Introduce la ubicacion de tu musica";
-                dialog.ContentArea.PackStart(entry, true, true, 10);
+
+                Box hbox = new Box(Orientation.Horizontal,10);
+                hbox.PackStart(entry,true,true,10);
+
+                Button sendButton = new Button ("Ok");
+                hbox.PackStart(sendButton,false,false,10);
+                dialog.ContentArea.PackStart(hbox,true,true,10);
+
                 dialog.ShowAll();
+                sendButton.Clicked +=(sender,e)=>
+                {
+                    string userInput = entry.Text;
+                    dialog.Respond(ResponseType.Ok);
+                };
                 if (dialog.Run() == (int)ResponseType.Ok)
                 {
                     string userInput = entry.Text;

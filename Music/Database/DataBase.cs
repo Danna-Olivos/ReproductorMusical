@@ -14,23 +14,6 @@ namespace Database
         //creating database
         private DataBase(string path) 
         {
-            // string dataPath = "./Database/Data/MyMusic.db";
-            // bool dataExists = File.Exists(dataPath);
-            // string connectionString = $"Data Source={dataPath};Version=3;";
-           
-            // connection = new SQLiteConnection(connectionString);
-            // connection.Open();
-            // Console.WriteLine("Connection is now opened");
-
-            // using (var command = new SQLiteCommand("PRAGMA foreign_keys = ON;", connection))
-            // {
-            //     command.ExecuteNonQuery();
-            // }
-            
-            // if (!dataExists)
-            // {
-            //     CreateTables();
-            // }
             string? dataPath = Path.GetDirectoryName(path);
             if (path != ":memory:" && dataPath != null && !Directory.Exists(dataPath))
             {
