@@ -71,7 +71,7 @@ namespace MusicApp
                 Box hbox = new Box(Orientation.Horizontal,10);
                 hbox.PackStart(entry,true,true,10);
 
-                Button sendButton = new Button ("Ok");
+                Button sendButton = new Button ("\u27A4");
                 hbox.PackStart(sendButton,false,false,10);
                 dialog.ContentArea.PackStart(hbox,true,true,10);
 
@@ -122,7 +122,7 @@ namespace MusicApp
 
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
-            Button searchButton = new Button("\u1F50D");
+            Button searchButton = new Button("\u26B2");
 
             Box searchBox = new Box(Orientation.Horizontal, 5);
             searchBox.PackStart(searchEntry, true, true, 0);
@@ -135,12 +135,15 @@ namespace MusicApp
             mainContainer.PackStart(resultsLabel, false, false, 0);
 
             //songList
+            
             ScrolledWindow scrolledWindow = new ScrolledWindow();
             TreeView treeView = new TreeView();  // Table
-            ListStore songList = new ListStore(typeof(string),typeof(string));
-            songList.AppendValues("Song 1", "Artist 1");
-            songList.AppendValues("Song 2", "Artist 2");
-            songList.AppendValues("Song 3", "Artist 3");
+            ListStore songList = new ListStore(typeof(string),typeof(string),typeof(int),typeof(int),typeof(string));
+            songList.AppendValues("Path 1", "title1",1,2024,"genre1");
+            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
+            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
+            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
+            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
 
             treeView.Model = songList;
 
@@ -172,19 +175,40 @@ namespace MusicApp
 
         private static void AddTreeViewColumns(TreeView treeView)
         {
-            // Column 1: Song Title
-            TreeViewColumn titleColumn = new TreeViewColumn { Title = "Title" };
+            // Column 1: Song path
+            TreeViewColumn titleColumn = new TreeViewColumn { Title = "Path" };
             CellRendererText titleCell = new CellRendererText();
             titleColumn.PackStart(titleCell, true);
-            titleColumn.AddAttribute(titleCell, "text", 0); // The first column in the ListStore is at index 0
+            titleColumn.AddAttribute(titleCell, "text", 0); 
             treeView.AppendColumn(titleColumn);
 
-            // Column 2: Artist
-            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Artist" };
+            // Column 2: title
+            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Title" };
             CellRendererText artistCell = new CellRendererText();
             artistColumn.PackStart(artistCell, true);
-            artistColumn.AddAttribute(artistCell, "text", 1); // The second column in the ListStore is at index 1
+            artistColumn.AddAttribute(artistCell, "text", 1); 
             treeView.AppendColumn(artistColumn);
+
+            // Column 3: track
+            TreeViewColumn trackColumn = new TreeViewColumn { Title = "Track" };
+            CellRendererText trackCell = new CellRendererText();
+            artistColumn.PackStart(trackCell, true);
+            artistColumn.AddAttribute(trackCell, "text", 2); 
+            treeView.AppendColumn(trackColumn);
+
+            // Column 4: year
+            TreeViewColumn yearColumn = new TreeViewColumn { Title = "Year" };
+            CellRendererText yearCell = new CellRendererText();
+            artistColumn.PackStart(yearCell, true);
+            artistColumn.AddAttribute(yearCell, "text", 3); 
+            treeView.AppendColumn(yearColumn);
+
+            // Column 5: genre
+            TreeViewColumn genreColumn = new TreeViewColumn { Title = "Genre" };
+            CellRendererText genreCell = new CellRendererText();
+            artistColumn.PackStart(genreCell, true);
+            artistColumn.AddAttribute(genreCell, "text", 4); 
+            treeView.AppendColumn(genreColumn);
         }
     } 
 }

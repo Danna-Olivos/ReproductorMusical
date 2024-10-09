@@ -9,8 +9,7 @@ namespace MusicApp
         private Minero miner;
         private string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "CapyMusic", "config.txt");
         private string path{get;set;}
-
-        //en el constructor hay que asignar el Path = 
+ 
         public Controller()
         {
             path = ConfigPath();
@@ -59,21 +58,27 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when mined
-        public void showSongList()
-        {
-
-        }
+        // public List<string> showSongList()
+        // {
+        //     List<string> info = new();
+        //     List<Songs> aviableSongs = db.ListSongs();
+        //     foreach(Songs song in aviableSongs)
+        //     {
+        //         string infoPerSong = $"{song.Title}";
+        //     }
+        // }
 
         //Retreive info from each song to display when selected
         public void getSongInfo(Songs song)
         {
-
+            
         }
 
         //change info from a song (changes database and metadata)
         public void editSong(Songs song)
         {
-
+            db.UpdateRolas(song);
+            miner.RewriteDataS(song);
         }
 
         //Retreive album info 
@@ -85,9 +90,11 @@ namespace MusicApp
         //change album info(changes database and metadata)
         public void editAlbum(Albums album)
         {
-
+            db.UpdateAlbums(album);
+            miner.RewriteDataA(album);
         }
 
+        //also should be able to edit all the shit from the other objects
         //make group 
         //define as group or as person
         //consultas :=C

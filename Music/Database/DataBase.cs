@@ -817,8 +817,6 @@ namespace Database
             return songs;
         }
 
-        //make, update, remove, retreive TYPES WOTTTT
-
         //Disconnection db method        
         public void Disconnect()
         {
