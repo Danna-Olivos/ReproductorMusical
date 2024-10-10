@@ -26,7 +26,7 @@ namespace Database
 
             connection = new SQLiteConnection(connectionString);
             connection.Open();
-            Console.WriteLine("Database connection open");
+            Console.WriteLine("Database connection open" + path);
 
             using (var command = new SQLiteCommand("PRAGMA foreign_keys = ON;", connection))
             {
@@ -276,6 +276,26 @@ namespace Database
             }
             
             return performers;
+        }
+
+        public Performer RetreivePerformer(int id)
+        {
+            Performer? performer = null;
+            string query = "SELECT * FROM performers WHERE id_performer = @id_performer";
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id_performer", id);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int idType = reader.GetInt32(1);
+                        string name = reader.GetString(2);
+                        performer = new Performer(id, name, (Type.ArtistType)idType);
+                    }
+                }
+            }
+            return performer;
         }
 
         //make, update, remove, retreive PERSONS
@@ -795,7 +815,7 @@ namespace Database
         public List<Albums> ListAlbums()
         {
             List<Albums> songs = new List<Albums>();
-            string query = "SELECT * FROM rolas";
+            string query = "SELECT * FROM albums";
             
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
@@ -816,6 +836,28 @@ namespace Database
             }
             return songs;
         }
+
+        public Albums RetreiveAlbum(int id)
+        {
+            Albums? album = null;
+            string query = "SELECT * FROM albums WHERE id_album = @id_album";
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id_album", id);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        string path = reader.GetString(1);
+                        string name = reader.GetString(2);
+                        int year = reader.GetInt32(3);
+                        album = new Albums(id, path,name,year);
+                    }
+                }
+            }
+            return album;
+        }
+
 
         //Disconnection db method        
         public void Disconnect()

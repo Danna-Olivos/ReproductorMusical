@@ -58,15 +58,31 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when mined
-        // public List<string> showSongList()
-        // {
-        //     List<string> info = new();
-        //     List<Songs> aviableSongs = db.ListSongs();
-        //     foreach(Songs song in aviableSongs)
-        //     {
-        //         string infoPerSong = $"{song.Title}";
-        //     }
-        // }
+        public List<string> showSongList()
+        {
+            List<string> info = new List<string>();
+            List<Songs> aviableSongs = db.ListSongs();
+            foreach(Songs song in aviableSongs)
+            {
+                string nameP = getSongPerformer(song.IdPerformer);
+                string nameA = getSongAlbum(song.IdAlbum);
+                string infoPerSong = $"Title: {song.Title}, Performer: {nameP}, Album: {nameA}, Track: {song.Track}, Year: {song.Year}, Genre: {song.Genre}";
+                info.Add(infoPerSong);
+            }
+            return info;
+        }
+
+        private string getSongPerformer(int id)
+        {
+            Performer? performer = db.RetreivePerformer(id);
+            return performer.Name;
+        }
+
+        private string getSongAlbum(int id)
+        {
+            Albums? album = db.RetreiveAlbum(id);
+            return album.Name;
+        }
 
         //Retreive info from each song to display when selected
         public void getSongInfo(Songs song)
@@ -75,7 +91,7 @@ namespace MusicApp
         }
 
         //change info from a song (changes database and metadata)
-        public void editSong(Songs song)
+        public void editSong(Songs song) //when song is selected by user, get object, get object info, rewite SAME object
         {
             db.UpdateRolas(song);
             miner.RewriteDataS(song);

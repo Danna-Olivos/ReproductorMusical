@@ -134,7 +134,7 @@ namespace MusicApp
             Label resultsLabel = new Label("Resultados de busqueda");
             mainContainer.PackStart(resultsLabel, false, false, 0);
 
-            //songList
+            //songList 
             
             ScrolledWindow scrolledWindow = new ScrolledWindow();
             TreeView treeView = new TreeView();  // Table
@@ -175,15 +175,15 @@ namespace MusicApp
 
         private static void AddTreeViewColumns(TreeView treeView)
         {
-            // Column 1: Song path
-            TreeViewColumn titleColumn = new TreeViewColumn { Title = "Path" };
+            // Column 1: Song title
+            TreeViewColumn titleColumn = new TreeViewColumn { Title = "Title" };
             CellRendererText titleCell = new CellRendererText();
             titleColumn.PackStart(titleCell, true);
             titleColumn.AddAttribute(titleCell, "text", 0); 
             treeView.AppendColumn(titleColumn);
 
-            // Column 2: title
-            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Title" };
+            // Column 2: artist
+            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Artist" };
             CellRendererText artistCell = new CellRendererText();
             artistColumn.PackStart(artistCell, true);
             artistColumn.AddAttribute(artistCell, "text", 1); 
