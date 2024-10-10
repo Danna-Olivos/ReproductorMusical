@@ -55,15 +55,65 @@ namespace MusicApp
 
             // Edit Button
             Button editButton = new Button("\u270E");
-            songInfoBox.PackStart(editButton, false, false, 0);
-            editButton.Activated += (sender, e) =>
+            songInfoBox.PackStart(editButton, true, true, 0);
+            editButton.Clicked += (sender, e) =>
             {
+                Dialog dialog = new Dialog(
+                    "Opciones de edicion",
+                    window,
+                    DialogFlags.Modal,
+                    ButtonsType.None
+                );
+                dialog.SetDefaultSize(200, 80);
+                Box editOptionsBox = new Box(Orientation.Horizontal, 5);
+    
+                Button editSongButton = new Button("Edit Song");
+                editOptionsBox.PackStart(editSongButton, false, false, 5);
 
+                Button editAlbumButton = new Button("Edit Album");
+                editOptionsBox.PackStart(editAlbumButton, false, false, 5); 
+
+                Button makePerButton = new Button("Add new artist");
+                editOptionsBox.PackStart(makePerButton, false, false, 5);  
+
+                Button makeGroButton = new Button("Add new group");
+                editOptionsBox.PackStart(makeGroButton, false, false, 5); 
+
+                Button makeINGroButton = new Button("Add artist to group");
+                editOptionsBox.PackStart(makeINGroButton, false, false, 5);            
+        
+                dialog.ContentArea.PackStart(editOptionsBox,true,true,5);
+                dialog.ShowAll();
+
+                editSongButton.Clicked += (s, ev) =>
+                {
+                    ShowEditSongForm();
+                };
+
+                editAlbumButton.Clicked += (s, ev) =>
+                {
+                    ShowEditAlbumForm();
+                };
+
+                makePerButton.Clicked += (s, ev) =>
+                {
+                    ShowMakeA();
+                };
+
+                makeGroButton.Clicked += (s, ev) =>
+                {
+                    ShowMakeG();
+                };
+
+                makeINGroButton.Clicked += (s, ev) =>
+                {
+                    ShowAddToGroup();
+                };
             };
 
             //Button for changing paths
             Button pathButton = new Button("Cambiar directorio");
-            songInfoBox.PackStart(pathButton, false, false, 0);
+            songInfoBox.PackStart(pathButton, true, true, 0);
             pathButton.Clicked += (sender, e) =>
             {
                 Dialog dialog = new Dialog(
@@ -122,7 +172,7 @@ namespace MusicApp
 
             //Button for mining
             Button mineButton = new Button("Minar");
-            songInfoBox.PackStart(mineButton,false,false,0);
+            songInfoBox.PackStart(mineButton,true,true,0);
             mineButton.Clicked += (sender, e) =>
             {
                 methods.StartMining();   
@@ -171,7 +221,7 @@ namespace MusicApp
                     string album = (string)model.GetValue(iter, 2);
 
                     //get each song(object) when selected
-                    var(idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(title);
+                    var(idP,idA,pathS,nameS, yearS, trackS, genreS, songObj) = methods.GetSongInfo(title);
                     titleLabel.Text = $"Title: {title}";
                     artistLabel.Text =  $"Performer: {performer}";
                     albumLabel.Text =  $" Album: {album}";
@@ -202,6 +252,65 @@ namespace MusicApp
 
             Application.Run();
 
+        }
+
+        
+        //EVENT HANDLING
+        private static void ShowEditAlbumForm()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ShowEditSongForm()
+        {
+            Dialog editSongDialog = new Dialog("Edit this Song", null, DialogFlags.Modal);
+    
+            Entry titleEntry = new Entry { PlaceholderText = "New Song Title" };
+            editSongDialog.ContentArea.PackStart(titleEntry, true, true, 10);
+
+            Entry performerEntry = new Entry { PlaceholderText = "New Performer" }; // si no existe el nombre hay que crear y asignar 
+            editSongDialog.ContentArea.PackStart(performerEntry, true, true, 10);
+            
+            Entry albumEntry = new Entry { PlaceholderText = "New Album" }; // si no existe crear
+            editSongDialog.ContentArea.PackStart(albumEntry, true, true, 10);
+
+            Entry genreEntry = new Entry { PlaceholderText = "New Genre" };
+            editSongDialog.ContentArea.PackStart(genreEntry, true, true, 10);
+
+            Entry yearEntry = new Entry { PlaceholderText = "New Song Year" };
+            editSongDialog.ContentArea.PackStart(yearEntry, true, true, 10);
+
+            editSongDialog.AddButton("OK", ResponseType.Ok);
+            editSongDialog.AddButton("Cancel", ResponseType.Cancel);
+
+            editSongDialog.ShowAll();
+
+            if (editSongDialog.Run() == (int)ResponseType.Ok)
+            {
+                string newTitle = titleEntry.Text; //hay que encontrar el id
+                string newPerformer = performerEntry.Text; //hay que encontrar el id
+                string newAlbum = albumEntry.Text;
+                string newGenre = genreEntry.Text;
+                string newYear = yearEntry.Text;
+
+            }
+
+            editSongDialog.Destroy();
+        }
+
+        private static void ShowAddToGroup()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ShowMakeG()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ShowMakeA()
+        {
+            throw new NotImplementedException();
         }
 
         private static void AddTreeViewColumns(TreeView treeView)

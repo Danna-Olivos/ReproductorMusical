@@ -87,7 +87,7 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when selected
-        public (int idP, int idA, string path,string title, int year, int track, string genre) GetSongInfo(string songName)
+        public (int idP, int idA, string path,string title, int year, int track, string genre, Songs s) GetSongInfo(string songName)
         {
             int songID = db.GetSongId(songName);
             Songs? song = db.RetreiveRola(songID);
@@ -101,7 +101,7 @@ namespace MusicApp
             int trackS = song.Track;
             string genreS = song.Genre;
 
-            return (idPerson, idAlbum,pathS,titleS,yearS,trackS,genreS);
+            return (idPerson, idAlbum, pathS, titleS, yearS, trackS, genreS, song);
         }
 
         //change info from a song (changes database and metadata)
