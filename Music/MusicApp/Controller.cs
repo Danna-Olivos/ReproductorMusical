@@ -52,59 +52,61 @@ namespace MusicApp
         }
         
         //Mina desde el path asignado
-        public void startMining()
+        public void StartMining()
         {
             miner.Mine(path);
         }
 
         //Retreive info from each song to display when mined
-        public List<string> showSongList()
+        public List<(string Title, string Performer, string Album, int Track, int Year)> ShowSongList()
         {
-            List<string> info = new List<string>();
-            List<Songs> aviableSongs = db.ListSongs();
-            foreach(Songs song in aviableSongs)
+
+            List<(string Title, string Performer, string Album, int Track, int Year)> songList = new List<(string, string, string, int, int)>();
+            List<Songs> availableSongs = db.ListSongs();
+
+            foreach (Songs song in availableSongs)
             {
-                string nameP = getSongPerformer(song.IdPerformer);
-                string nameA = getSongAlbum(song.IdAlbum);
-                string infoPerSong = $"Title: {song.Title}, Performer: {nameP}, Album: {nameA}, Track: {song.Track}, Year: {song.Year}, Genre: {song.Genre}";
-                info.Add(infoPerSong);
+                string performerName = GetSongPerformer(song.IdPerformer);
+                string albumName = GetSongAlbum(song.IdAlbum);
+                songList.Add((song.Title, performerName, albumName, song.Track, song.Year));
             }
-            return info;
+            return songList;
         }
 
-        private string getSongPerformer(int id)
+
+        private string GetSongPerformer(int id)
         {
             Performer? performer = db.RetreivePerformer(id);
             return performer.Name;
         }
 
-        private string getSongAlbum(int id)
+        private string GetSongAlbum(int id)
         {
             Albums? album = db.RetreiveAlbum(id);
             return album.Name;
         }
 
         //Retreive info from each song to display when selected
-        public void getSongInfo(Songs song)
+        public void GetSongInfo(Songs song)
         {
             
         }
 
         //change info from a song (changes database and metadata)
-        public void editSong(Songs song) //when song is selected by user, get object, get object info, rewite SAME object
+        public void EditSong(Songs song) //when song is selected by user, get object, get object info, rewite SAME object
         {
             db.UpdateRolas(song);
             miner.RewriteDataS(song);
         }
 
         //Retreive album info 
-        public void getAlbumInfo(Albums album)
+        public void GetAlbumInfo(Albums album)
         {
 
         }
 
         //change album info(changes database and metadata)
-        public void editAlbum(Albums album)
+        public void EditAlbum(Albums album)
         {
             db.UpdateAlbums(album);
             miner.RewriteDataA(album);

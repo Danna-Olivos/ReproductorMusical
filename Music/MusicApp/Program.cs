@@ -117,7 +117,7 @@ namespace MusicApp
             songInfoBox.PackStart(mineButton,false,false,0);
             mineButton.Clicked += (sender, e) =>
             {
-                methods.startMining();   
+                methods.StartMining();   
             };
 
             // Search Section (Search Entry and Button)
@@ -134,18 +134,13 @@ namespace MusicApp
             Label resultsLabel = new Label("Resultados de busqueda");
             mainContainer.PackStart(resultsLabel, false, false, 0);
 
-            //songList 
-            
+            //songList             
             ScrolledWindow scrolledWindow = new ScrolledWindow();
             TreeView treeView = new TreeView();  // Table
-            ListStore songList = new ListStore(typeof(string),typeof(string),typeof(int),typeof(int),typeof(string));
-            songList.AppendValues("Path 1", "title1",1,2024,"genre1");
-            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
-            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
-            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
-            songList.AppendValues("Path 1", "Artist 1",1,2024,"genre1");
-
-            treeView.Model = songList;
+            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(int), typeof(int));
+            
+            var songData = methods.ShowSongList();
+            PopulateSongList(songData,treeView,songList);
 
             AddTreeViewColumns(treeView);
             scrolledWindow.Add(treeView);
@@ -158,13 +153,12 @@ namespace MusicApp
 
             // Playback Control Buttons (Horizontal Box)
             Box controlBox = new Box(Orientation.Horizontal, 5);
-            string[] buttonLabels = {"\u25B6"}; //pausa \u23F8 "\u2190", "\u2192"
-            foreach (var label in buttonLabels)
-            {
-                Button controlButton = new Button(label);
-                controlBox.PackStart(controlButton, false, false, 0);
-            }
-            mainContainer.PackStart(controlBox, false, false, 0);
+            Button buttonplay = new Button("\u25B6"); //pausa \u23F8 "\u2190", "\u2192"
+            controlBox.PackStart(mineButton,false,false,0);  
+            // buttonplay.Clicked += (sender, e) =>
+            // {
+            //     //para que se reproduxca la cancion 
+            // };          
 
             // Show the entire window
             window.ShowAll();
@@ -183,33 +177,43 @@ namespace MusicApp
             treeView.AppendColumn(titleColumn);
 
             // Column 2: artist
-            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Artist" };
+            TreeViewColumn artistColumn = new TreeViewColumn { Title = "Performer" };
             CellRendererText artistCell = new CellRendererText();
             artistColumn.PackStart(artistCell, true);
             artistColumn.AddAttribute(artistCell, "text", 1); 
             treeView.AppendColumn(artistColumn);
 
-            // Column 3: track
+            // Column 3: album
+            TreeViewColumn albumColumn = new TreeViewColumn { Title = "Album" };
+            CellRendererText albumCell = new CellRendererText();
+            albumColumn.PackStart(albumCell, true);
+            albumColumn.AddAttribute(albumCell, "text", 2); 
+            treeView.AppendColumn(albumColumn);
+
+            // Column 4: track
             TreeViewColumn trackColumn = new TreeViewColumn { Title = "Track" };
             CellRendererText trackCell = new CellRendererText();
-            artistColumn.PackStart(trackCell, true);
-            artistColumn.AddAttribute(trackCell, "text", 2); 
+            trackColumn.PackStart(trackCell, true);
+            trackColumn.AddAttribute(trackCell, "text", 3); 
             treeView.AppendColumn(trackColumn);
 
-            // Column 4: year
+            // Column 5: year
             TreeViewColumn yearColumn = new TreeViewColumn { Title = "Year" };
             CellRendererText yearCell = new CellRendererText();
-            artistColumn.PackStart(yearCell, true);
-            artistColumn.AddAttribute(yearCell, "text", 3); 
+            yearColumn.PackStart(yearCell, true);
+            yearColumn.AddAttribute(yearCell, "text", 4); 
             treeView.AppendColumn(yearColumn);
-
-            // Column 5: genre
-            TreeViewColumn genreColumn = new TreeViewColumn { Title = "Genre" };
-            CellRendererText genreCell = new CellRendererText();
-            artistColumn.PackStart(genreCell, true);
-            artistColumn.AddAttribute(genreCell, "text", 4); 
-            treeView.AppendColumn(genreColumn);
         }
+
+        private static void PopulateSongList(List<(string Title, string Performer, string Album, int Track, int Year)> songs, TreeView treeView, ListStore songList)
+            {
+                foreach (var song in songs)
+                {
+                    songList.AppendValues(song.Title, song.Performer, song.Album, song.Track, song.Year);
+                }
+                
+                treeView.Model = songList; 
+            }
     } 
 }
 
