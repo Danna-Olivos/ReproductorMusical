@@ -93,7 +93,7 @@ namespace MusicApp
         }
 
         //change info from a song (changes database and metadata)
-        public void EditSong(Songs song) //when song is selected by user, get object, get object info, rewite SAME object
+        public void EditSong(Songs song) //when song is selected by user, get object, get object info, rewrite SAME object
         {
             db.UpdateRolas(song);
             miner.RewriteDataS(song);

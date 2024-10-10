@@ -649,13 +649,13 @@ namespace Database
             }
             return songs;
         }
-        //make, update, remove, retreive IN_GROUP WOTTTTT
+        //make, update, remove, retreive IN_GROUP 
         public bool MakeInGroup (InGroup inG)
         {
             bool added = false;
             try
             {
-                string query = "INSERT OR IGNORE INTO in_groups (id_person, id_group)" +
+                string query = "INSERT INTO in_groups (id_person, id_group)" +
                                 "VALUES (@id_person, @id_group)";
                 
                 using(SQLiteCommand command = new SQLiteCommand(query, connection))

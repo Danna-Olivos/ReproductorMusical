@@ -52,6 +52,10 @@ namespace MusicApp
             // Edit Button
             Button editButton = new Button("\u270E");
             songInfoBox.PackStart(editButton, false, false, 0);
+            editButton.Activated += (sender, e) =>
+            {
+
+            };
 
             //Button for changing paths
             Button pathButton = new Button("Cambiar directorio");
@@ -123,6 +127,10 @@ namespace MusicApp
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
             Button searchButton = new Button("\u26B2");
+            searchEntry.Activated += (sender,e) =>
+            {
+
+            };
 
             Box searchBox = new Box(Orientation.Horizontal, 5);
             searchBox.PackStart(searchEntry, true, true, 0);
@@ -134,9 +142,9 @@ namespace MusicApp
             Label resultsLabel = new Label("Resultados de busqueda");
             mainContainer.PackStart(resultsLabel, false, false, 0);
 
-            //songList             
+            //SongList             
             ScrolledWindow scrolledWindow = new ScrolledWindow();
-            TreeView treeView = new TreeView();  // Table
+            TreeView treeView = new TreeView(); 
             ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(int), typeof(int));
             
             var songData = methods.ShowSongList();
@@ -146,6 +154,25 @@ namespace MusicApp
             scrolledWindow.Add(treeView);
             mainContainer.PackStart(scrolledWindow, true, true, 5);
 
+            //select row action
+            treeView.Selection.Changed += (sender, e) =>
+            {
+                TreeIter iter;
+                ITreeModel model; 
+                if (treeView.Selection.GetSelected(out model, out iter))
+                {
+                    // extract data from selected row
+                    string title = (string)model.GetValue(iter, 0);
+                    string performer = (string)model.GetValue(iter, 1);
+                    string album = (string)model.GetValue(iter, 2);
+                    int track = (int)model.GetValue(iter, 3);
+                    int year = (int)model.GetValue(iter, 4);
+
+                    Console.WriteLine($"Selected song: {title}, Performer: {performer}, Album: {album}, Track: {track}, Year: {year}");
+                }
+            };
+            
+
             // Slider (Volume or Progress)
             Scale progressSlider = new Scale(Orientation.Horizontal, 0, 100, 1);
             progressSlider.Value = 100;
@@ -153,11 +180,13 @@ namespace MusicApp
 
             // Playback Control Buttons (Horizontal Box)
             Box controlBox = new Box(Orientation.Horizontal, 5);
+            mainContainer.PackStart(controlBox, false, false, 0); 
             Button buttonplay = new Button("\u25B6"); //pausa \u23F8 "\u2190", "\u2192"
-            controlBox.PackStart(mineButton,false,false,0);  
+            controlBox.PackStart(buttonplay,true,true,0); 
+            controlBox.Halign = Align.Center;
             // buttonplay.Clicked += (sender, e) =>
             // {
-            //     //para que se reproduxca la cancion 
+            //     //para que se reproduzca la cancion 
             // };          
 
             // Show the entire window
@@ -169,7 +198,7 @@ namespace MusicApp
 
         private static void AddTreeViewColumns(TreeView treeView)
         {
-            // Column 1: Song title
+            // Column 1: title
             TreeViewColumn titleColumn = new TreeViewColumn { Title = "Title" };
             CellRendererText titleCell = new CellRendererText();
             titleColumn.PackStart(titleCell, true);
@@ -206,14 +235,22 @@ namespace MusicApp
         }
 
         private static void PopulateSongList(List<(string Title, string Performer, string Album, int Track, int Year)> songs, TreeView treeView, ListStore songList)
+        {
+            foreach (var song in songs)
             {
-                foreach (var song in songs)
-                {
-                    songList.AppendValues(song.Title, song.Performer, song.Album, song.Track, song.Year);
-                }
-                
-                treeView.Model = songList; 
+                songList.AppendValues(song.Title, song.Performer, song.Album, song.Track, song.Year);
             }
+                
+            treeView.Model = songList; 
+        }
+
+        //para regresar las listas de canciones resultados de las busquedas 
+        private static ListStore HandleSearch(object sender, EventArgs e)
+        {
+            ListStore list = new ListStore(typeof(string), typeof(string), typeof(string), typeof(int), typeof(int));
+            return list;
+        }
+
     } 
 }
 
