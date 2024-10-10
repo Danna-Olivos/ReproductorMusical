@@ -42,12 +42,16 @@ namespace MusicApp
             Box songInfoBox = new Box(Orientation.Vertical, 5);
             topSection.PackStart(songInfoBox, false, false, 0);
 
-            Label titleLabel = new Label("Titulo ...");
+            Label titleLabel = new Label("Titulo:");
             songInfoBox.PackStart(titleLabel, false, false, 0);
-            Label artistLabel = new Label("Album...");
+            Label artistLabel = new Label("Album:");
             songInfoBox.PackStart(artistLabel, false, false, 0);
-            Label albumLabel = new Label("Artista...");
+            Label albumLabel = new Label("Artista:");
             songInfoBox.PackStart(albumLabel, false, false, 0);
+            Label yearLabel = new Label("Año: ");
+            songInfoBox.PackStart(yearLabel, false, false, 0);
+            Label genreLabel = new Label("Género: ");
+            songInfoBox.PackStart(genreLabel, false, false, 0);
 
             // Edit Button
             Button editButton = new Button("\u270E");
@@ -145,7 +149,7 @@ namespace MusicApp
             //SongList             
             ScrolledWindow scrolledWindow = new ScrolledWindow();
             TreeView treeView = new TreeView(); 
-            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(int), typeof(int));
+            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string));
             
             var songData = methods.ShowSongList();
             PopulateSongList(songData,treeView,songList);
@@ -165,10 +169,14 @@ namespace MusicApp
                     string title = (string)model.GetValue(iter, 0);
                     string performer = (string)model.GetValue(iter, 1);
                     string album = (string)model.GetValue(iter, 2);
-                    int track = (int)model.GetValue(iter, 3);
-                    int year = (int)model.GetValue(iter, 4);
 
-                    Console.WriteLine($"Selected song: {title}, Performer: {performer}, Album: {album}, Track: {track}, Year: {year}");
+                    //get each song(object) when selected
+                    var(idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(title);
+                    titleLabel.Text = $"Title: {title}";
+                    artistLabel.Text =  $"Performer: {performer}";
+                    albumLabel.Text =  $" Album: {album}";
+                    yearLabel.Text =  $" Year: {yearS} ";
+                    genreLabel.Text =  $" Genre: {genreS}";
                 }
             };
             
@@ -219,26 +227,13 @@ namespace MusicApp
             albumColumn.AddAttribute(albumCell, "text", 2); 
             treeView.AppendColumn(albumColumn);
 
-            // Column 4: track
-            TreeViewColumn trackColumn = new TreeViewColumn { Title = "Track" };
-            CellRendererText trackCell = new CellRendererText();
-            trackColumn.PackStart(trackCell, true);
-            trackColumn.AddAttribute(trackCell, "text", 3); 
-            treeView.AppendColumn(trackColumn);
-
-            // Column 5: year
-            TreeViewColumn yearColumn = new TreeViewColumn { Title = "Year" };
-            CellRendererText yearCell = new CellRendererText();
-            yearColumn.PackStart(yearCell, true);
-            yearColumn.AddAttribute(yearCell, "text", 4); 
-            treeView.AppendColumn(yearColumn);
         }
 
-        private static void PopulateSongList(List<(string Title, string Performer, string Album, int Track, int Year)> songs, TreeView treeView, ListStore songList)
+        private static void PopulateSongList(List<(string Title, string Performer, string Album)> songs, TreeView treeView, ListStore songList)
         {
             foreach (var song in songs)
             {
-                songList.AppendValues(song.Title, song.Performer, song.Album, song.Track, song.Year);
+                songList.AppendValues(song.Title, song.Performer, song.Album);
             }
                 
             treeView.Model = songList; 
@@ -247,7 +242,7 @@ namespace MusicApp
         //para regresar las listas de canciones resultados de las busquedas 
         private static ListStore HandleSearch(object sender, EventArgs e)
         {
-            ListStore list = new ListStore(typeof(string), typeof(string), typeof(string), typeof(int), typeof(int));
+            ListStore list = new ListStore(typeof(string), typeof(string), typeof(string));
             return list;
         }
 

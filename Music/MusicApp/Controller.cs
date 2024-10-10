@@ -58,17 +58,17 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when mined
-        public List<(string Title, string Performer, string Album, int Track, int Year)> ShowSongList()
+        public List<(string Title, string Performer, string Album)> ShowSongList()
         {
 
-            List<(string Title, string Performer, string Album, int Track, int Year)> songList = new List<(string, string, string, int, int)>();
+            List<(string Title, string Performer, string Album)> songList = new List<(string, string, string)>();
             List<Songs> availableSongs = db.ListSongs();
 
             foreach (Songs song in availableSongs)
             {
                 string performerName = GetSongPerformer(song.IdPerformer);
                 string albumName = GetSongAlbum(song.IdAlbum);
-                songList.Add((song.Title, performerName, albumName, song.Track, song.Year));
+                songList.Add((song.Title, performerName, albumName));
             }
             return songList;
         }
@@ -87,9 +87,21 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when selected
-        public void GetSongInfo(Songs song)
+        public (int idP, int idA, string path,string title, int year, int track, string genre) GetSongInfo(string songName)
         {
-            
+            int songID = db.GetSongId(songName);
+            Songs? song = db.RetreiveRola(songID);
+
+            if(song == null) throw new Exception ($"Song with name{songName} not found");
+            int idPerson = song.IdPerformer;
+            int idAlbum = song.IdAlbum;
+            string pathS = song.Path;
+            string titleS = song.Title;
+            int yearS = song.Year;
+            int trackS = song.Track;
+            string genreS = song.Genre;
+
+            return (idPerson, idAlbum,pathS,titleS,yearS,trackS,genreS);
         }
 
         //change info from a song (changes database and metadata)

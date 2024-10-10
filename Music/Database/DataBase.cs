@@ -123,6 +123,7 @@ namespace Database
         Console.WriteLine("Data base created successfully");
         }
 
+        
         //make, update, remove, retreive PERFORMERS
         public bool MakePerformer (Performer performer)
         {
@@ -298,6 +299,7 @@ namespace Database
             return performer;
         }
 
+        
         //make, update, remove, retreive PERSONS
         public bool MakePerson (Person person)
         {
@@ -414,6 +416,7 @@ namespace Database
             return persons;
         }
 
+        
         //make, update, remove, retreive GROUPS
         public bool MakeGroup (Group group)
         {
@@ -526,6 +529,7 @@ namespace Database
             return groups;
         }
 
+        
         //make, update, remove, retreive ROLAS
         public bool MakeRolas (Songs rola)
         {
@@ -649,6 +653,60 @@ namespace Database
             }
             return songs;
         }
+
+        public Songs RetreiveRola(int id)
+        {
+            Songs? song = null;
+            string query = "SELECT * FROM rolas WHERE id_rola = @id_rola";
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id_rola", id);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int idPerformer = reader.GetInt32(1);
+                        int idAlbum = reader.GetInt32(2);
+                        string path = reader.GetString(3);
+                        string title = reader.GetString(4);
+                        int track = reader.GetInt32(5);
+                        int year = reader.GetInt32(6);
+                        string genre = reader.GetString(7); 
+                        
+                        song = new Songs(id, idPerformer,idAlbum,path,title,track,year,genre);
+                    }
+                }
+            }
+            return song;
+        }
+
+        public int GetSongId(string songName)
+        {
+            int id_rola = -1;
+            try
+            {
+                string query = "SELECT id_rola FROM rolas WHERE title = @title LIMIT 1";
+                
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@title", songName);
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            id_rola = reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error occurred while fetching rola '{songName}': {ex.Message}");
+            }
+            return id_rola;
+        }
+        
+        
         //make, update, remove, retreive IN_GROUP 
         public bool MakeInGroup (InGroup inG)
         {
@@ -679,6 +737,7 @@ namespace Database
             return added;
         }
 
+        
         //make, update, remove, retreive ALBUMS
         public bool MakeAlbums (Albums album)
         {
