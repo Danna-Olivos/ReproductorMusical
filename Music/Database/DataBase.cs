@@ -680,16 +680,16 @@ namespace Database
             return song;
         }
 
-        public int GetSongId(string songName)
+        public int GetSongId(string songPath)
         {
             int id_rola = -1;
             try
             {
-                string query = "SELECT id_rola FROM rolas WHERE title = @title LIMIT 1";
+                string query = "SELECT id_rola FROM rolas WHERE path = @path LIMIT 1";
                 
                 using (SQLiteCommand command = new SQLiteCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@title", songName);
+                    command.Parameters.AddWithValue("@path", songPath);
                     using (SQLiteDataReader reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -701,7 +701,7 @@ namespace Database
             }
             catch(Exception ex)
             {
-                Console.WriteLine($"Error occurred while fetching rola '{songName}': {ex.Message}");
+                Console.WriteLine($"Error occurred while fetching rola '{songPath}': {ex.Message}");
             }
             return id_rola;
         }

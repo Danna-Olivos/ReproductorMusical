@@ -96,38 +96,5 @@ namespace Database
         //     }
         // }
 
-        public void RewriteDataA(Albums album)
-        {
-            try
-            {
-                var file = TagLib.File.Create(album.Path);
-                file.Tag.Album = album.Name;
-                file.Tag.Year = (uint)album.Year;
-
-                file.Save();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error updating metadata for {album.Path}: {ex.Message}");
-            }
-        }
-        public void RewriteDataS(Songs song)
-        {
-            try
-            {
-                var file = TagLib.File.Create(song.Path);
-                file.Tag.Title = song.Title;
-                file.Tag.Year = (uint)song.Year;
-                file.Tag.Genres = new[] { song.Genre };
-                file.Tag.Track = (uint)song.Track;
-
-                file.Save();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error updating metadata for {song.Path}: {ex.Message}");
-            }
-        }
-
     }
 }

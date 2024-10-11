@@ -6,7 +6,8 @@ namespace MusicApp
 {
     public class Program
     {
-        public static Controller methods = new Controller();
+        private static Controller methods = new Controller();
+        private static string? pathFromSelectedS; 
         public static void Main(string[] args)
         {
   
@@ -58,6 +59,20 @@ namespace MusicApp
             songInfoBox.PackStart(editButton, true, true, 0);
             editButton.Clicked += (sender, e) =>
             {
+                if (pathFromSelectedS == null)
+                {
+                    // Handle the case when no song is selected
+                    MessageDialog dialog1 = new MessageDialog(
+                        window,
+                        DialogFlags.Modal,
+                        MessageType.Warning,
+                        ButtonsType.Ok,
+                        "No song selected for editing."
+                    );
+                    dialog1.Run();
+                    dialog1.Destroy();
+                    return;
+                }
                 Dialog dialog = new Dialog(
                     "Opciones de edicion",
                     window,
@@ -87,7 +102,7 @@ namespace MusicApp
 
                 editSongButton.Clicked += (s, ev) =>
                 {
-                    ShowEditSongForm();
+                    ShowEditSongForm(pathFromSelectedS);
                 };
 
                 editAlbumButton.Clicked += (s, ev) =>
@@ -199,7 +214,7 @@ namespace MusicApp
             //SongList             
             ScrolledWindow scrolledWindow = new ScrolledWindow();
             TreeView treeView = new TreeView(); 
-            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string));
+            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(string));
             
             var songData = methods.ShowSongList();
             PopulateSongList(songData,treeView,songList);
@@ -219,19 +234,23 @@ namespace MusicApp
                     string title = (string)model.GetValue(iter, 0);
                     string performer = (string)model.GetValue(iter, 1);
                     string album = (string)model.GetValue(iter, 2);
+                    string songPath = (string)model.GetValue(iter,3);
 
                     //get each song(object) when selected
-                    var(idP,idA,pathS,nameS, yearS, trackS, genreS, songObj) = methods.GetSongInfo(title);
+                    var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(songPath);
+
                     titleLabel.Text = $"Title: {title}";
                     artistLabel.Text =  $"Performer: {performer}";
                     albumLabel.Text =  $" Album: {album}";
                     yearLabel.Text =  $" Year: {yearS} ";
                     genreLabel.Text =  $" Genre: {genreS}";
+
+                    pathFromSelectedS = pathS;
                 }
             };
             
 
-            // Slider (Volume or Progress)
+            // Slider (Progress)
             Scale progressSlider = new Scale(Orientation.Horizontal, 0, 100, 1);
             progressSlider.Value = 100;
             mainContainer.PackStart(progressSlider, false, false, 0);
@@ -261,37 +280,47 @@ namespace MusicApp
             throw new NotImplementedException();
         }
 
-        private static void ShowEditSongForm()
+        private static void ShowEditSongForm(string path)
         {
+            var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(path);
+
             Dialog editSongDialog = new Dialog("Edit this Song", null, DialogFlags.Modal);
     
-            Entry titleEntry = new Entry { PlaceholderText = "New Song Title" };
+            Entry titleEntry = new Entry { Text = nameS, PlaceholderText = "New Song Title" };
             editSongDialog.ContentArea.PackStart(titleEntry, true, true, 10);
 
-            Entry performerEntry = new Entry { PlaceholderText = "New Performer" }; // si no existe el nombre hay que crear y asignar 
+            Entry performerEntry = new Entry { Text = methods.GetSongPerformer(idP),PlaceholderText = "New Performer" }; // si no existe el nombre hay que crear y asignar 
             editSongDialog.ContentArea.PackStart(performerEntry, true, true, 10);
             
-            Entry albumEntry = new Entry { PlaceholderText = "New Album" }; // si no existe crear
+            Entry albumEntry = new Entry { Text = methods.GetSongAlbum(idA),PlaceholderText = "New Album" }; // si no existe crear y asignar 
             editSongDialog.ContentArea.PackStart(albumEntry, true, true, 10);
 
-            Entry genreEntry = new Entry { PlaceholderText = "New Genre" };
+            Entry genreEntry = new Entry {Text = genreS, PlaceholderText = "New Genre" };
             editSongDialog.ContentArea.PackStart(genreEntry, true, true, 10);
 
-            Entry yearEntry = new Entry { PlaceholderText = "New Song Year" };
+            Entry yearEntry = new Entry { Text = yearS.ToString(),PlaceholderText = "New Song Year" };
             editSongDialog.ContentArea.PackStart(yearEntry, true, true, 10);
 
-            editSongDialog.AddButton("OK", ResponseType.Ok);
+            Entry trackEntry = new Entry { Text = trackS.ToString(),PlaceholderText = "New track" };
+            editSongDialog.ContentArea.PackStart(trackEntry, true, true, 10);
+
+            editSongDialog.AddButton("OK", ResponseType.Ok); //should also actualize list
             editSongDialog.AddButton("Cancel", ResponseType.Cancel);
 
             editSongDialog.ShowAll();
 
             if (editSongDialog.Run() == (int)ResponseType.Ok)
             {
+
                 string newTitle = titleEntry.Text; //hay que encontrar el id
-                string newPerformer = performerEntry.Text; //hay que encontrar el id
-                string newAlbum = albumEntry.Text;
                 string newGenre = genreEntry.Text;
+                string newTrack = trackEntry.Text;
+                string newPerformer = performerEntry.Text; //hay que encontrar el id
                 string newYear = yearEntry.Text;
+                string newAlbum = albumEntry.Text;
+               
+
+                methods.EditSong(pathS,idS,newTitle,newGenre,newTrack,newPerformer,newYear,newAlbum);//metodo de edicion
 
             }
 
@@ -336,13 +365,20 @@ namespace MusicApp
             albumColumn.AddAttribute(albumCell, "text", 2); 
             treeView.AppendColumn(albumColumn);
 
+            // // Column 4: Path
+            // TreeViewColumn pathColumn = new TreeViewColumn { Title = "Path" };
+            // CellRendererText pathCell = new CellRendererText();
+            // pathColumn.PackStart(pathCell, true);
+            // pathColumn.AddAttribute(pathCell, "text", 3); 
+            // treeView.AppendColumn(pathColumn);
+
         }
 
-        private static void PopulateSongList(List<(string Title, string Performer, string Album)> songs, TreeView treeView, ListStore songList)
+        private static void PopulateSongList(List<(string Title, string Performer, string Album,string Path)> songs, TreeView treeView, ListStore songList)
         {
             foreach (var song in songs)
             {
-                songList.AppendValues(song.Title, song.Performer, song.Album);
+                songList.AppendValues(song.Title, song.Performer, song.Album, song.Path);
             }
                 
             treeView.Model = songList; 

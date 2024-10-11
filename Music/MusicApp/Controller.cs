@@ -58,41 +58,41 @@ namespace MusicApp
         }
 
         //Retreive info from each song to display when mined
-        public List<(string Title, string Performer, string Album)> ShowSongList()
+        public List<(string Title, string Performer, string Album, string Path)> ShowSongList()
         {
-
-            List<(string Title, string Performer, string Album)> songList = new List<(string, string, string)>();
+ 
+            List<(string Title, string Performer, string Album, string Path)> songList = new List<(string, string, string, string)>();
             List<Songs> availableSongs = db.ListSongs();
 
             foreach (Songs song in availableSongs)
             {
                 string performerName = GetSongPerformer(song.IdPerformer);
                 string albumName = GetSongAlbum(song.IdAlbum);
-                songList.Add((song.Title, performerName, albumName));
+                songList.Add((song.Title, performerName, albumName,song.Path));
             }
             return songList;
         }
 
 
-        private string GetSongPerformer(int id)
+        public string GetSongPerformer(int id)
         {
             Performer? performer = db.RetreivePerformer(id);
             return performer.Name;
         }
 
-        private string GetSongAlbum(int id)
+        public string GetSongAlbum(int id)
         {
             Albums? album = db.RetreiveAlbum(id);
             return album.Name;
         }
 
         //Retreive info from each song to display when selected
-        public (int idP, int idA, string path,string title, int year, int track, string genre, Songs s) GetSongInfo(string songName)
+        public (int idS, int idP, int idA, string path,string title, int year, int track, string genre) GetSongInfo(string songPath)
         {
-            int songID = db.GetSongId(songName);
+            int songID = db.GetSongId(songPath);
             Songs? song = db.RetreiveRola(songID);
 
-            if(song == null) throw new Exception ($"Song with name{songName} not found");
+            if(song == null) throw new Exception ($"Song with name{songPath} not found");
             int idPerson = song.IdPerformer;
             int idAlbum = song.IdAlbum;
             string pathS = song.Path;
@@ -101,27 +101,62 @@ namespace MusicApp
             int trackS = song.Track;
             string genreS = song.Genre;
 
-            return (idPerson, idAlbum, pathS, titleS, yearS, trackS, genreS, song);
+            return (songID, idPerson, idAlbum, pathS, titleS, yearS, trackS, genreS);
         }
 
         //change info from a song (changes database and metadata)
-        public void EditSong(Songs song) //when song is selected by user, get object, get object info, rewrite SAME object
+        public void EditSong(string songPath, int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
-            db.UpdateRolas(song);
-            miner.RewriteDataS(song);
+            Songs? songToUpdate = db.RetreiveRola(songID);
+
+            if (songToUpdate == null) return;
+            
+            int performerID = db.GetPerformerId(performerName); // si no existe, el metodo ya se encarga de crear
+            Performer? newPerformer = db.RetreivePerformer(performerID); 
+
+            songToUpdate.IdPerformer = newPerformer.IdPerformer;
+
+            int albumID = db.GetAlbumId(albumName, int.Parse(newYear), path); // si no existe, el metodo ya se encarga de crear
+            Albums? newAlbum = db.RetreiveAlbum(albumID);
+
+            songToUpdate.IdAlbum = newAlbum.IdAlbum;
+
+            if (!string.IsNullOrEmpty(newTitle)) songToUpdate.Title = newTitle;
+            if (!string.IsNullOrEmpty(newGenre)) songToUpdate.Genre = newGenre;
+            if (!string.IsNullOrEmpty(newTrack)) songToUpdate.Track = int.Parse(newTrack);
+            if (!string.IsNullOrEmpty(newYear)) songToUpdate.Year = int.Parse(newYear);
+
+            db.UpdateRolas(songToUpdate); //update in database
+
+            UpdateMetadata(songToUpdate); //update mp3
         }
 
         //Retreive album info 
-        public void GetAlbumInfo(Albums album)
+        public void GetAlbumInfo(string albumName)
         {
 
         }
 
         //change album info(changes database and metadata)
-        public void EditAlbum(Albums album)
+        public void EditAlbum(string albumName, int year, string filePath)
         {
+            int albumID = db.GetAlbumId(albumName, year, filePath);
+            Albums? album = db.RetreiveAlbum(albumID);
+
             db.UpdateAlbums(album);
-            miner.RewriteDataA(album);
+       
+        }
+
+        private void UpdateMetadata(Songs rola)
+        {
+            var file = TagLib.File.Create(rola.Path);
+            file.Tag.Title = rola.Title;
+            file.Tag.Performers = new[] { GetSongPerformer(rola.IdPerformer) };
+            file.Tag.Album = GetSongAlbum(rola.IdAlbum);
+            file.Tag.Year = (uint)rola.Year;
+            file.Tag.Track = (uint)rola.Track;
+            file.Tag.Genres = new[] { rola.Genre};
+            file.Save();
         }
 
         //also should be able to edit all the shit from the other objects
