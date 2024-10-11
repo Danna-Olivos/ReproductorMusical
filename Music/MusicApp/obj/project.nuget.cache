@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Q/nSa2Df7q8=",
+  "dgSpecHash": "z51YOZQCoA8=",
   "success": true,
   "projectFilePath": "/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/MusicApp.csproj",
   "expectedPackageFiles": [
@@ -36,12 +36,5 @@
     "/home/dannaabigailolivosnoriega/.nuget/packages/system.windows.extensions/4.7.0/system.windows.extensions.4.7.0.nupkg.sha512",
     "/home/dannaabigailolivosnoriega/.nuget/packages/taglibsharp/2.3.0/taglibsharp.2.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error al obtener los datos de vulnerabilidad del paquete: No se puede cargar el índice de servicio del origen https://api.nuget.org/v3/index.json."
-    }
-  ]
+  "logs": []
 }

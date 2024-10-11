@@ -33,10 +33,28 @@ namespace MusicApp
 
             // Create the image widget
             Image songImage = new Image();
-            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/AlbumCovers/perritos.jpg");
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf("MusicApp/AlbumCovers/default-cover.jpg");
             Gdk.Pixbuf scaledPixbuf = pixbuf.ScaleSimple(250, 250, Gdk.InterpType.Bilinear);
             songImage.Pixbuf = scaledPixbuf;
             topSection.PackStart(songImage, false, false, 0);
+
+            // Search Section (Search Entry and Button)
+            Entry searchEntry = new Entry { PlaceholderText = "Search" };
+            Button searchButton = new Button("\u26B2");
+            searchEntry.Activated += (sender,e) =>
+            {
+
+            };
+
+            Box searchBox = new Box(Orientation.Horizontal, 5);
+            searchBox.PackStart(searchEntry, true, true, 0);
+            searchBox.PackStart(searchButton, false, false, 0);
+
+            mainContainer.PackStart(searchBox, false, false, 0);
+
+            // Search Results section
+            Label resultsLabel = new Label("Resultados de busqueda");
+            mainContainer.PackStart(resultsLabel, false, false, 0);
 
 
             // Song Info section (Vertical Box for song title and details)
@@ -53,6 +71,53 @@ namespace MusicApp
             songInfoBox.PackStart(yearLabel, false, false, 0);
             Label genreLabel = new Label("Género: ");
             songInfoBox.PackStart(genreLabel, false, false, 0);
+
+            //SongList             
+            ScrolledWindow scrolledWindow = new ScrolledWindow();
+            TreeView treeView = new TreeView(); 
+            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(string));
+            
+            var songData = methods.ShowSongList();
+            PopulateSongList(songData,treeView,songList);
+
+            AddTreeViewColumns(treeView);
+            scrolledWindow.Add(treeView);
+            mainContainer.PackStart(scrolledWindow, true, true, 5);
+
+            //select row action
+            treeView.Selection.Changed += (sender, e) =>
+            {
+                TreeIter iter;
+                ITreeModel model; 
+                if (treeView.Selection.GetSelected(out model, out iter))
+                {
+                    // extract data from selected row
+                    string title = (string)model.GetValue(iter, 0);
+                    string performer = (string)model.GetValue(iter, 1);
+                    string album = (string)model.GetValue(iter, 2);
+                    string songPath = (string)model.GetValue(iter,3);
+
+                    //get each song(object) when selected
+                    var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(songPath);
+
+                    Gdk.Pixbuf albumCoverPixbuf = methods.GetAlbumCover(songPath);
+                    Gdk.Pixbuf scaledAlbumCover = albumCoverPixbuf.ScaleSimple(250, 250, Gdk.InterpType.Bilinear);
+                    songImage.Pixbuf = scaledAlbumCover;
+
+                    titleLabel.Text = $"Title: {title}";
+                    artistLabel.Text =  $"Performer: {performer}";
+                    albumLabel.Text =  $" Album: {album}";
+                    yearLabel.Text =  $" Year: {yearS} ";
+                    genreLabel.Text =  $" Genre: {genreS}";
+
+                    pathFromSelectedS = pathS;
+                }
+            };
+
+            // Slider (Progress)
+            Scale progressSlider = new Scale(Orientation.Horizontal, 0, 100, 1);
+            progressSlider.Value = 100;
+            mainContainer.PackStart(progressSlider, false, false, 0);
 
             // Edit Button
             Button editButton = new Button("\u270E");
@@ -176,70 +241,20 @@ namespace MusicApp
             songInfoBox.PackStart(mineButton,true,true,0);
             mineButton.Clicked += (sender, e) =>
             {
-                methods.StartMining();   
+                methods.StartMining(); 
+
+                var updatedSongData = methods.ShowSongList();
+                PopulateSongList(updatedSongData, treeView, songList);  
+
             };
 
-            // Search Section (Search Entry and Button)
-            Entry searchEntry = new Entry { PlaceholderText = "Search" };
-            Button searchButton = new Button("\u26B2");
-            searchEntry.Activated += (sender,e) =>
+            Button refreshButton = new Button("Refresh table");
+            songInfoBox.PackStart(refreshButton,true,true,0);
+            refreshButton.Clicked += (sender, e) =>
             {
-
+                var updatedSongData = methods.ShowSongList();
+                PopulateSongList(updatedSongData, treeView, songList);  
             };
-
-            Box searchBox = new Box(Orientation.Horizontal, 5);
-            searchBox.PackStart(searchEntry, true, true, 0);
-            searchBox.PackStart(searchButton, false, false, 0);
-
-            mainContainer.PackStart(searchBox, false, false, 0);
-
-            // Search Results section
-            Label resultsLabel = new Label("Resultados de busqueda");
-            mainContainer.PackStart(resultsLabel, false, false, 0);
-
-            //SongList             
-            ScrolledWindow scrolledWindow = new ScrolledWindow();
-            TreeView treeView = new TreeView(); 
-            ListStore songList = new ListStore(typeof(string), typeof(string), typeof(string), typeof(string));
-            
-            var songData = methods.ShowSongList();
-            PopulateSongList(songData,treeView,songList);
-
-            AddTreeViewColumns(treeView);
-            scrolledWindow.Add(treeView);
-            mainContainer.PackStart(scrolledWindow, true, true, 5);
-
-            //select row action
-            treeView.Selection.Changed += (sender, e) =>
-            {
-                TreeIter iter;
-                ITreeModel model; 
-                if (treeView.Selection.GetSelected(out model, out iter))
-                {
-                    // extract data from selected row
-                    string title = (string)model.GetValue(iter, 0);
-                    string performer = (string)model.GetValue(iter, 1);
-                    string album = (string)model.GetValue(iter, 2);
-                    string songPath = (string)model.GetValue(iter,3);
-
-                    //get each song(object) when selected
-                    var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(songPath);
-
-                    titleLabel.Text = $"Title: {title}";
-                    artistLabel.Text =  $"Performer: {performer}";
-                    albumLabel.Text =  $" Album: {album}";
-                    yearLabel.Text =  $" Year: {yearS} ";
-                    genreLabel.Text =  $" Genre: {genreS}";
-
-                    pathFromSelectedS = pathS;
-                }
-            };
-            
-
-            // Slider (Progress)
-            Scale progressSlider = new Scale(Orientation.Horizontal, 0, 100, 1);
-            progressSlider.Value = 100;
-            mainContainer.PackStart(progressSlider, false, false, 0);
 
             // Playback Control Buttons (Horizontal Box)
             Box controlBox = new Box(Orientation.Horizontal, 5);
@@ -452,23 +467,25 @@ namespace MusicApp
             albumColumn.AddAttribute(albumCell, "text", 2); 
             treeView.AppendColumn(albumColumn);
 
-            // // Column 4: Path
-            // TreeViewColumn pathColumn = new TreeViewColumn { Title = "Path" };
-            // CellRendererText pathCell = new CellRendererText();
-            // pathColumn.PackStart(pathCell, true);
-            // pathColumn.AddAttribute(pathCell, "text", 3); 
-            // treeView.AppendColumn(pathColumn);
+            // Column 4: Path
+            TreeViewColumn pathColumn = new TreeViewColumn { Title = "Path" };
+            CellRendererText pathCell = new CellRendererText();
+            pathColumn.PackStart(pathCell, true);
+            pathColumn.AddAttribute(pathCell, "text", 3); 
+            treeView.AppendColumn(pathColumn);
 
         }
 
         private static void PopulateSongList(List<(string Title, string Performer, string Album,string Path)> songs, TreeView treeView, ListStore songList)
         {
+            songList.Clear();
             foreach (var song in songs)
             {
                 songList.AppendValues(song.Title, song.Performer, song.Album, song.Path);
             }
                 
             treeView.Model = songList; 
+            treeView.ShowAll();
         }
 
         //para regresar las listas de canciones resultados de las busquedas 

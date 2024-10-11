@@ -189,6 +189,11 @@ namespace MusicApp
             file.Save();
         }
 
+        public Gdk.Pixbuf GetAlbumCover(string songPath)
+        {
+            return miner.GetAlbumCover(songPath);
+        }
+
         //also should be able to edit all the shit from the other objects
         //make group 
         //define as group or as person
