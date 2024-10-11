@@ -108,6 +108,18 @@ namespace MusicApp
         public void EditSong(int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
             Songs? songToUpdate = db.RetreiveRola(songID);
+            var albumDirectory = Path.GetDirectoryName(songToUpdate.Path);
+
+            int performerID = db.GetPerformerId(performerName); // si no existe, el metodo ya se encarga de crear
+            Performer? newPerformer = db.RetreivePerformer(performerID); 
+            db.UpdatePerformer(newPerformer);
+            songToUpdate.IdPerformer = newPerformer.IdPerformer;
+
+            int albumID = db.GetAlbumId(albumName,int.Parse(newYear),albumDirectory); // si no existe, el metodo ya se encarga de crear
+            Albums? newAlbum = db.RetreiveAlbum(albumID);
+            EditAlbum(albumID, albumName,newYear);
+
+            songToUpdate.IdAlbum = newAlbum.IdAlbum;
 
             if (songToUpdate == null) return;
 
@@ -192,6 +204,24 @@ namespace MusicApp
         public Gdk.Pixbuf GetAlbumCover(string songPath)
         {
             return miner.GetAlbumCover(songPath);
+        }
+
+        public void MakeArtist(string stageName, string realName, string birthD, string deathD)
+        {
+            Person newPerson = new Person(stageName, realName, birthD, deathD);
+            db.MakePerson(newPerson);
+        }
+
+        public void MakeGroup(string name, string startD, string endD)
+        {
+            Group newGroup = new Group(name, startD, endD);
+            db.MakeGroup(newGroup);
+        }
+
+        public void MakeInGroup(int personID, int groupId)
+        {
+            InGroup newInGroup = new InGroup(personID, groupId);
+            db.MakeInGroup(newInGroup);
         }
 
         //also should be able to edit all the shit from the other objects
