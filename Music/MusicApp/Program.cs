@@ -89,14 +89,8 @@ namespace MusicApp
                 Button editAlbumButton = new Button("Edit Album");
                 editOptionsBox.PackStart(editAlbumButton, false, false, 5); 
 
-                Button makePerButton = new Button("Add new artist");
-                editOptionsBox.PackStart(makePerButton, false, false, 5);  
-
-                Button makeGroButton = new Button("Add new group");
-                editOptionsBox.PackStart(makeGroButton, false, false, 5); 
-
-                Button makeINGroButton = new Button("Add artist to group");
-                editOptionsBox.PackStart(makeINGroButton, false, false, 5);            
+                Button makePerButton = new Button("Edit Performer");
+                editOptionsBox.PackStart(makePerButton, false, false, 5);             
         
                 dialog.ContentArea.PackStart(editOptionsBox,true,true,5);
                 dialog.ShowAll();
@@ -113,18 +107,9 @@ namespace MusicApp
 
                 makePerButton.Clicked += (s, ev) =>
                 {
-                    ShowMakeA();
+                    ShowEditPerformer(pathFromSelectedS);
                 };
 
-                makeGroButton.Clicked += (s, ev) =>
-                {
-                    ShowMakeG();
-                };
-
-                makeINGroButton.Clicked += (s, ev) =>
-                {
-                    ShowAddToGroup();
-                };
             };
 
             //Button for changing paths
@@ -276,6 +261,71 @@ namespace MusicApp
 
         
         //EVENT HANDLING
+
+        private static void ShowEditPerformer(string path)
+        {
+            var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(path);
+
+            var (nameP, typeP)= methods.GetPerformerInfo(idP);
+            Dialog editPDialog = new Dialog("Edit this Performer", null, DialogFlags.Modal);
+    
+            Entry titleEntry = new Entry { Text = nameP, PlaceholderText = "New Name" };
+            editPDialog.ContentArea.PackStart(titleEntry, true, true, 10);
+
+            MenuBar menuBar = new MenuBar();
+            editPDialog.ContentArea.PackStart(menuBar, false, false, 0);
+
+            MenuItem performerTypeMenu = new MenuItem("Select Performer Type");
+            menuBar.Append(performerTypeMenu);
+
+            // Create a sub-menu for the Performer Type options
+            Menu performerTypeOptions = new Menu();
+            performerTypeMenu.Submenu = performerTypeOptions;
+
+            // Create the three options for the performer type
+            MenuItem option0 = new MenuItem("Solo Artist");
+            MenuItem option1 = new MenuItem("Group");
+            MenuItem option2 = new MenuItem("Unknown");
+
+            // Add the options to the sub-menu
+            performerTypeOptions.Append(option0);
+            performerTypeOptions.Append(option1);
+            performerTypeOptions.Append(option2);
+
+            int selectedType = typeP; 
+
+            option1.Activated += (sender, e) =>
+            {
+                selectedType = 0;
+            };
+            option1.Activated += (sender, e) =>
+            {
+                selectedType = 1;
+            };
+            option2.Activated += (sender, e) =>
+            {
+                selectedType = 2;
+            };
+
+            editPDialog.AddButton("OK", ResponseType.Ok); //should also actualize list
+            editPDialog.AddButton("Cancel", ResponseType.Cancel);
+
+            editPDialog.ShowAll();
+
+            if (editPDialog.Run() == (int)ResponseType.Ok)
+            {
+
+                string newTitle = titleEntry.Text; 
+
+               
+
+                methods.EditPerformer(idP, newTitle,selectedType );//metodo de edicion
+
+            }
+
+            editPDialog.Destroy();
+        }
+
         private static void ShowEditAlbumForm(string path)
         {
             var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(path);

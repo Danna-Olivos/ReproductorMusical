@@ -108,7 +108,7 @@ namespace MusicApp
         public void EditSong(int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
             Songs? songToUpdate = db.RetreiveRola(songID);
-            var albumDirectory = Path.GetDirectoryName(songToUpdate.Path);
+            var albumDirectory = Path.GetDirectoryName(songToUpdate.Path); //delete(?)
 
             if (songToUpdate == null) return;
             
@@ -158,6 +158,33 @@ namespace MusicApp
             
 
             db.UpdateAlbums(albumToUpdate);
+       
+        }
+
+        public(string name, int type) GetPerformerInfo(int id)
+        {
+            Performer? performer = db.RetreivePerformer(id);
+
+            if(performer == null) throw new Exception ($"Performer with id{id} not found");
+
+            string nameP = performer.Name;
+            int typeP = (int)performer.Type;
+            
+
+            return (nameP, typeP);
+        }
+
+        public void EditPerformer(int performerID, string newName, int newType)
+        {
+            Performer? performerToUpdate = db.RetreivePerformer(performerID);
+
+            if (performerToUpdate == null) return;
+
+            if (!string.IsNullOrEmpty(newName)) performerToUpdate.Name = newName;
+            performerToUpdate.Type = (Database.Type.ArtistType)newType;
+            
+
+            db.UpdatePerformer(performerToUpdate);
        
         }
 
