@@ -108,19 +108,8 @@ namespace MusicApp
         public void EditSong(int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
             Songs? songToUpdate = db.RetreiveRola(songID);
-            var albumDirectory = Path.GetDirectoryName(songToUpdate.Path); //delete(?)
 
             if (songToUpdate == null) return;
-            
-            int performerID = db.GetPerformerId(performerName); // si no existe, el metodo ya se encarga de crear
-            Performer? newPerformer = db.RetreivePerformer(performerID); 
-            db.UpdatePerformer(newPerformer);
-            songToUpdate.IdPerformer = newPerformer.IdPerformer;
-
-            int albumID = db.GetAlbumId(albumName,int.Parse(newYear),albumDirectory); // si no existe, el metodo ya se encarga de crear
-            Albums? newAlbum = db.RetreiveAlbum(albumID);
-            db.UpdateAlbums(newAlbum);
-            songToUpdate.IdAlbum = newAlbum.IdAlbum;
 
             if (!string.IsNullOrEmpty(newTitle)) songToUpdate.Title = newTitle;
             if (!string.IsNullOrEmpty(newGenre)) songToUpdate.Genre = newGenre;

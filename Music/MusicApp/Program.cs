@@ -278,19 +278,29 @@ namespace MusicApp
             MenuItem performerTypeMenu = new MenuItem("Select Performer Type");
             menuBar.Append(performerTypeMenu);
 
-            // Create a sub-menu for the Performer Type options
             Menu performerTypeOptions = new Menu();
             performerTypeMenu.Submenu = performerTypeOptions;
 
-            // Create the three options for the performer type
-            MenuItem option0 = new MenuItem("Solo Artist");
-            MenuItem option1 = new MenuItem("Group");
-            MenuItem option2 = new MenuItem("Unknown");
+            RadioMenuItem option0 = new RadioMenuItem("Solo Artist");
+            RadioMenuItem option1 = new RadioMenuItem(option0.Group,"Group");
+            RadioMenuItem option2 = new RadioMenuItem(option0.Group,"Unknown");
 
-            // Add the options to the sub-menu
             performerTypeOptions.Append(option0);
             performerTypeOptions.Append(option1);
             performerTypeOptions.Append(option2);
+
+            if (typeP == 0)
+            {
+                option0.Active = true;
+            }
+            else if (typeP == 1)
+            {
+                option1.Active = true;  
+            }
+            else if(typeP == 2)
+            {
+                option2.Active = true; 
+            }
 
             int selectedType = typeP; 
 
