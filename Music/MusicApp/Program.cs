@@ -73,6 +73,7 @@ namespace MusicApp
                     dialog1.Destroy();
                     return;
                 }
+
                 Dialog dialog = new Dialog(
                     "Opciones de edicion",
                     window,
@@ -107,7 +108,7 @@ namespace MusicApp
 
                 editAlbumButton.Clicked += (s, ev) =>
                 {
-                    ShowEditAlbumForm();
+                    ShowEditAlbumForm(pathFromSelectedS);
                 };
 
                 makePerButton.Clicked += (s, ev) =>
@@ -275,9 +276,35 @@ namespace MusicApp
 
         
         //EVENT HANDLING
-        private static void ShowEditAlbumForm()
+        private static void ShowEditAlbumForm(string path)
         {
-            throw new NotImplementedException();
+            var(idS, idP,idA,pathS,nameS, yearS, trackS, genreS) = methods.GetSongInfo(path);
+            var (pathA, nameA, yearA)= methods.GetAlbumInfo(idA);
+            Dialog editAlbumDialog = new Dialog("Edit this Album", null, DialogFlags.Modal);
+    
+            Entry titleEntry = new Entry { Text = nameA, PlaceholderText = "New Album Name" };
+            editAlbumDialog.ContentArea.PackStart(titleEntry, true, true, 10);
+
+            Entry yearEntry = new Entry { Text = yearA.ToString(),PlaceholderText = "New Album Year" };
+            editAlbumDialog.ContentArea.PackStart(yearEntry, true, true, 10);
+
+            editAlbumDialog.AddButton("OK", ResponseType.Ok); //should also actualize list
+            editAlbumDialog.AddButton("Cancel", ResponseType.Cancel);
+
+            editAlbumDialog.ShowAll();
+
+            if (editAlbumDialog.Run() == (int)ResponseType.Ok)
+            {
+
+                string newTitle = titleEntry.Text; 
+                string newYear = yearEntry.Text;
+               
+
+                methods.EditAlbum(idA, newTitle, newYear);//metodo de edicion
+
+            }
+
+            editAlbumDialog.Destroy();
         }
 
         private static void ShowEditSongForm(string path)
@@ -320,7 +347,7 @@ namespace MusicApp
                 string newAlbum = albumEntry.Text;
                
 
-                methods.EditSong(pathS,idS,newTitle,newGenre,newTrack,newPerformer,newYear,newAlbum);//metodo de edicion
+                methods.EditSong(idS,newTitle,newGenre,newTrack,newPerformer,newYear,newAlbum);//metodo de edicion
 
             }
 

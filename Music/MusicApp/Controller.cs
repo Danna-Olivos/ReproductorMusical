@@ -105,20 +105,21 @@ namespace MusicApp
         }
 
         //change info from a song (changes database and metadata)
-        public void EditSong(string songPath, int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
+        public void EditSong(int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
             Songs? songToUpdate = db.RetreiveRola(songID);
+            var albumDirectory = Path.GetDirectoryName(songToUpdate.Path);
 
             if (songToUpdate == null) return;
             
             int performerID = db.GetPerformerId(performerName); // si no existe, el metodo ya se encarga de crear
             Performer? newPerformer = db.RetreivePerformer(performerID); 
-
+            db.UpdatePerformer(newPerformer);
             songToUpdate.IdPerformer = newPerformer.IdPerformer;
 
-            int albumID = db.GetAlbumId(albumName, int.Parse(newYear), path); // si no existe, el metodo ya se encarga de crear
+            int albumID = db.GetAlbumId(albumName,int.Parse(newYear),albumDirectory); // si no existe, el metodo ya se encarga de crear
             Albums? newAlbum = db.RetreiveAlbum(albumID);
-
+            db.UpdateAlbums(newAlbum);
             songToUpdate.IdAlbum = newAlbum.IdAlbum;
 
             if (!string.IsNullOrEmpty(newTitle)) songToUpdate.Title = newTitle;
@@ -132,18 +133,31 @@ namespace MusicApp
         }
 
         //Retreive album info 
-        public void GetAlbumInfo(string albumName)
+        public(string path, string name, int year) GetAlbumInfo(int id)
         {
+            Albums? albums = db.RetreiveAlbum(id);
 
+            if(albums == null) throw new Exception ($"Album with id{id} not found");
+            string pathA = albums.Path;
+            string nameA = albums.Name;
+            int yearA = albums.Year;
+            
+
+            return (pathA, nameA, yearA);
         }
 
         //change album info(changes database and metadata)
-        public void EditAlbum(string albumName, int year, string filePath)
+        public void EditAlbum(int albumID, string newAlbumName, string newYear)
         {
-            int albumID = db.GetAlbumId(albumName, year, filePath);
-            Albums? album = db.RetreiveAlbum(albumID);
+            Albums? albumToUpdate = db.RetreiveAlbum(albumID);
 
-            db.UpdateAlbums(album);
+            if (albumToUpdate == null) return;
+
+            if (!string.IsNullOrEmpty(newAlbumName)) albumToUpdate.Name = newAlbumName;
+            if (!string.IsNullOrEmpty(newYear)) albumToUpdate.Year = int.Parse(newYear);
+            
+
+            db.UpdateAlbums(albumToUpdate);
        
         }
 

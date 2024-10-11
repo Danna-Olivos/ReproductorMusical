@@ -97,16 +97,17 @@ namespace Database
 
             CREATE TABLE albums (
                 id_album INTEGER PRIMARY KEY,
-                path TEXT UNIQUE,
+                path TEXT,
                 name TEXT,
-                year INTEGER
+                year INTEGER,
+                UNIQUE (name, path, year)
             );
 
             CREATE TABLE rolas (
                 id_rola INTEGER PRIMARY KEY,
                 id_performer INTEGER,
                 id_album INTEGER,
-                path TEXT,
+                path TEXT UNIQUE,
                 title TEXT,
                 track INTEGER,
                 year INTEGER,
@@ -789,7 +790,7 @@ namespace Database
                     }
         
                 }
-                Console.WriteLine("Album removed");
+                Console.WriteLine("Album updated");
                 return added;
             }
             catch (Exception ex)
