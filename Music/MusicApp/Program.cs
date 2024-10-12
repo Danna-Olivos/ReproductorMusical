@@ -408,8 +408,6 @@ namespace MusicApp
 
                 string newTitle = titleEntry.Text; 
 
-               
-
                 methods.EditPerformer(idP, newTitle,selectedType );//metodo de edicion
 
             }
@@ -533,18 +531,18 @@ namespace MusicApp
 
         private static void ShowMakeA()
         {
-            Dialog editADialog = new Dialog("Make a Group", null, DialogFlags.Modal);
+            Dialog editADialog = new Dialog("Make an Artist", null, DialogFlags.Modal);
     
             Entry nameEntry = new Entry { PlaceholderText = "Artist Name" };
             editADialog.ContentArea.PackStart(nameEntry, true, true, 10);
 
-            Entry realNameEntry = new Entry { PlaceholderText = "Fecha de creacion" };
+            Entry realNameEntry = new Entry { PlaceholderText = "Real Name" };
             editADialog.ContentArea.PackStart(realNameEntry, true, true, 10);
 
-            Entry birthEntry = new Entry { PlaceholderText = "Fecha de separacion" };
+            Entry birthEntry = new Entry { PlaceholderText = "Fecha de nacimiento" };
             editADialog.ContentArea.PackStart(birthEntry, true, true, 10);
 
-            Entry deathEntry = new Entry { PlaceholderText = "Fecha de separacion" };
+            Entry deathEntry = new Entry { PlaceholderText = "Fecha de fallecimiento" };
             editADialog.ContentArea.PackStart(deathEntry, true, true, 10);
 
             editADialog.AddButton("OK", ResponseType.Ok); //should also actualize list
