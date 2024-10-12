@@ -12,11 +12,7 @@ namespace MusicApp
         {
   
             Application.Init();
-
-            // var cssProvider = new CssProvider();
-            // cssProvider.LoadFromPath("/home/dannaabigailolivosnoriega/ReproductorMusical/Music/MusicApp/style.css");
-            // StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, StyleProviderPriority.User);
-            
+ 
             // Main window
             Window window = new Window("CapyMusica");
             window.SetDefaultSize(1000, 800);
@@ -40,35 +36,9 @@ namespace MusicApp
 
             // Search Section (Search Entry and Button)
             Entry searchEntry = new Entry { PlaceholderText = "Search" };
-            Button searchButton = new Button("\u26B2");
-            searchEntry.Activated += (sender,e) =>
-            {
-                string query = searchEntry.Text;
-                bool isValid = methods.IsValid(query);
-
-                if (!isValid)
-                {
-                    MessageDialog error = new MessageDialog(
-
-                        window,
-                        DialogFlags.Modal,
-                        MessageType.Error,
-                        ButtonsType.Ok,
-                        "Invalid search"
-                    );
-                    error.Run();
-                    error.Hide();
-                }
-                else
-                {
-                    PerformSearching(query);
-                }
-                
-            };
 
             Box searchBox = new Box(Orientation.Horizontal, 5);
             searchBox.PackStart(searchEntry, true, true, 0);
-            searchBox.PackStart(searchButton, false, false, 0);
 
             mainContainer.PackStart(searchBox, false, false, 0);
 
@@ -103,6 +73,32 @@ namespace MusicApp
             AddTreeViewColumns(treeView);
             scrolledWindow.Add(treeView);
             mainContainer.PackStart(scrolledWindow, true, true, 5);
+
+            searchEntry.Activated += (sender,e) =>
+            {
+                string query = searchEntry.Text;
+                bool isValid = methods.IsValid(query);
+
+                if (!isValid)
+                {
+                    MessageDialog error = new MessageDialog(
+
+                        window,
+                        DialogFlags.Modal,
+                        MessageType.Error,
+                        ButtonsType.Ok,
+                        "Invalid search"
+                    );
+                    error.Run();
+                    error.Hide();
+                }
+                else
+                {
+                    var results = methods.ShowFoundSongList(methods.FindSongs(query));
+                    PopulateSongList(results, treeView, songList);
+                }
+                
+            };
 
             //select row action
             treeView.Selection.Changed += (sender, e) =>

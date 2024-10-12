@@ -241,9 +241,9 @@ namespace MusicApp
             db.MakeInGroup(newInGroup);
         }
 
-        public void FindSongs(string query)
+        public List<Songs> FindSongs(string query)
         {
-            search.HandleSearch(query); 
+            return search.HandleSearch(query); 
         }
 
         public bool IsValid(string query)
