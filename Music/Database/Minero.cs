@@ -1,3 +1,4 @@
+#nullable disable
 using System;
 using System.IO;
 using TagLib;
@@ -16,6 +17,11 @@ namespace Database
             {
                 try
                 {
+                    if (!HasReadingPermissions(filePath))
+                    {
+                        Console.WriteLine($"Skipping file {filePath}: No reading permissions.");
+                        continue; 
+                    }
                     var albumDirectory = Path.GetDirectoryName(filePath);
                     var (performer,title,album,year,genre,track) = GetData(filePath); // getting data for each path in the directory
                     //making objects with extracted data for each path in the directory
@@ -30,10 +36,33 @@ namespace Database
                     db.MakeRolas(s);//inserting object into database
                     
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    Console.WriteLine($"Skipping file {filePath}: Unauthorized Access.");
+                }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error processing file {filePath}: {ex.Message}");
                 }
+            }
+        }
+
+        private bool HasReadingPermissions(string filePath)
+        {
+            try
+            {
+                using (FileStream fs = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    return true;
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -87,7 +116,7 @@ namespace Database
                 using (var stream = new MemoryStream(albumCover.Data.Data))
                     return new Gdk.Pixbuf(stream);
             }    
-            return new Gdk.Pixbuf("default-cover.jpg");
+            return new Gdk.Pixbuf("MusicApp/AlbumCovers/default-cover.jpg");
         }
 
     }

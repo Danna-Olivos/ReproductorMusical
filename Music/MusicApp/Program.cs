@@ -140,7 +140,6 @@ namespace MusicApp
                     dialog1.Run();
                     
                     dialog1.Hide();
-                    dialog1.Dispose();
                     return;
                 }
 
@@ -224,7 +223,6 @@ namespace MusicApp
                         );
                         okay.Run();
                         okay.Hide();
-                        okay.Dispose();
                     }
                     else
                     {
@@ -237,10 +235,9 @@ namespace MusicApp
                         );
                         error.Run();
                         error.Hide();
-                        error.Dispose();
                     }
                 }
-                dialog.Destroy();
+                dialog.Hide();
             };
 
             //Button for mining
@@ -396,7 +393,6 @@ namespace MusicApp
             }
 
             editPDialog.Hide();
-            editPDialog.Dispose();
         }
 
         private static void ShowEditAlbumForm(string path)
@@ -428,7 +424,6 @@ namespace MusicApp
             }
 
             editAlbumDialog.Hide();
-            editAlbumDialog.Dispose();
         }
 
         private static void ShowEditSongForm(string path)
@@ -476,7 +471,6 @@ namespace MusicApp
             }
 
             editSongDialog.Hide();
-            editSongDialog.Dispose();
         }
 
         private static void ShowAddToGroup()
@@ -513,7 +507,6 @@ namespace MusicApp
             }
 
             editGDialog.Hide();
-            editGDialog.Dispose();
         }
 
         private static void ShowMakeA()
@@ -549,7 +542,7 @@ namespace MusicApp
             }
 
             editADialog.Hide();
-            editADialog.Dispose();
+
         }
 
         private static void AddTreeViewColumns(TreeView treeView)
@@ -575,12 +568,6 @@ namespace MusicApp
             albumColumn.AddAttribute(albumCell, "text", 2); 
             treeView.AppendColumn(albumColumn);
 
-            // Column 4: Path
-            TreeViewColumn pathColumn = new TreeViewColumn { Title = "Path" };
-            CellRendererText pathCell = new CellRendererText();
-            pathColumn.PackStart(pathCell, true);
-            pathColumn.AddAttribute(pathCell, "text", 3); 
-            treeView.AppendColumn(pathColumn);
 
         }
 

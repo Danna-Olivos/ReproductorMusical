@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Data.SQLite;
 using System.IO;
 
@@ -6,7 +7,7 @@ namespace Database
 {
     public class DataBase
     {
-        private static DataBase? instance = null;
+        private static DataBase instance = null;
         private SQLiteConnection connection{get;set;}
         private static readonly string defaultPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CapyMusica", "MyMusic.db");
 
@@ -14,7 +15,7 @@ namespace Database
         //creating database
         private DataBase(string path) 
         {
-            string? dataPath = Path.GetDirectoryName(path);
+            string dataPath = Path.GetDirectoryName(path);
             if (path != ":memory:" && dataPath != null && !Directory.Exists(dataPath))
             {
                 Directory.CreateDirectory(dataPath);
@@ -282,7 +283,7 @@ namespace Database
 
         public Performer RetreivePerformer(int id)
         {
-            Performer? performer = null;
+            Performer performer = null;
             string query = "SELECT * FROM performers WHERE id_performer = @id_performer";
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
@@ -657,7 +658,7 @@ namespace Database
 
         public Songs RetreiveRola(int id)
         {
-            Songs? song = null;
+            Songs song = null;
             string query = "SELECT * FROM rolas WHERE id_rola = @id_rola";
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
@@ -899,7 +900,7 @@ namespace Database
 
         public Albums RetreiveAlbum(int id)
         {
-            Albums? album = null;
+            Albums album = null;
             string query = "SELECT * FROM albums WHERE id_album = @id_album";
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {

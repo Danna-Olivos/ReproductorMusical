@@ -1,5 +1,5 @@
+#nullable disable
 using Database;
-using TagLib.Matroska;
 
 namespace MusicApp
 {
@@ -76,13 +76,13 @@ namespace MusicApp
 
         public string GetSongPerformer(int id)
         {
-            Performer? performer = db.RetreivePerformer(id);
+            Performer performer = db.RetreivePerformer(id);
             return performer.Name;
         }
 
         public string GetSongAlbum(int id)
         {
-            Albums? album = db.RetreiveAlbum(id);
+            Albums album = db.RetreiveAlbum(id);
             return album.Name;
         }
 
@@ -90,7 +90,7 @@ namespace MusicApp
         public (int idS, int idP, int idA, string path,string title, int year, int track, string genre) GetSongInfo(string songPath)
         {
             int songID = db.GetSongId(songPath);
-            Songs? song = db.RetreiveRola(songID);
+            Songs song = db.RetreiveRola(songID);
 
             if(song == null) throw new Exception ($"Song with name{songPath} not found");
             int idPerson = song.IdPerformer;
@@ -107,16 +107,16 @@ namespace MusicApp
         //change info from a song (changes database and metadata)
         public void EditSong(int songID,string newTitle, string newGenre, string newTrack, string performerName, string newYear, string albumName)
         {
-            Songs? songToUpdate = db.RetreiveRola(songID);
+            Songs songToUpdate = db.RetreiveRola(songID);
             var albumDirectory = Path.GetDirectoryName(songToUpdate.Path);
 
             int performerID = db.GetPerformerId(performerName); // si no existe, el metodo ya se encarga de crear
-            Performer? newPerformer = db.RetreivePerformer(performerID); 
+            Performer newPerformer = db.RetreivePerformer(performerID); 
             db.UpdatePerformer(newPerformer);
             songToUpdate.IdPerformer = newPerformer.IdPerformer;
 
             int albumID = db.GetAlbumId(albumName,int.Parse(newYear),albumDirectory); // si no existe, el metodo ya se encarga de crear
-            Albums? newAlbum = db.RetreiveAlbum(albumID);
+            Albums newAlbum = db.RetreiveAlbum(albumID);
             EditAlbum(albumID, albumName,newYear);
 
             songToUpdate.IdAlbum = newAlbum.IdAlbum;
@@ -136,7 +136,7 @@ namespace MusicApp
         //Retreive album info 
         public(string path, string name, int year) GetAlbumInfo(int id)
         {
-            Albums? albums = db.RetreiveAlbum(id);
+            Albums albums = db.RetreiveAlbum(id);
 
             if(albums == null) throw new Exception ($"Album with id{id} not found");
             string pathA = albums.Path;
@@ -150,7 +150,7 @@ namespace MusicApp
         //change album info(changes database and metadata)
         public void EditAlbum(int albumID, string newAlbumName, string newYear)
         {
-            Albums? albumToUpdate = db.RetreiveAlbum(albumID);
+            Albums albumToUpdate = db.RetreiveAlbum(albumID);
 
             if (albumToUpdate == null) return;
 
@@ -164,7 +164,7 @@ namespace MusicApp
 
         public(string name, int type) GetPerformerInfo(int id)
         {
-            Performer? performer = db.RetreivePerformer(id);
+            Performer performer = db.RetreivePerformer(id);
 
             if(performer == null) throw new Exception ($"Performer with id{id} not found");
 
@@ -177,7 +177,7 @@ namespace MusicApp
 
         public void EditPerformer(int performerID, string newName, int newType)
         {
-            Performer? performerToUpdate = db.RetreivePerformer(performerID);
+            Performer performerToUpdate = db.RetreivePerformer(performerID);
 
             if (performerToUpdate == null) return;
 
@@ -223,14 +223,6 @@ namespace MusicApp
             InGroup newInGroup = new InGroup(personID, groupId);
             db.MakeInGroup(newInGroup);
         }
-
-        //also should be able to edit all the shit from the other objects
-        //make group 
-        //define as group or as person
-        //consultas :=C
-
-        
-
 
     }
 }
