@@ -919,6 +919,120 @@ namespace Database
             return album;
         }
 
+        public List<int> GetAlbumsId(string albumName)
+        {
+            List<int> albumIds = new List<int>();
+            try
+            {
+                string query = "SELECT id_album FROM albums WHERE name = @name";
+                
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@name", albumName);
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int id_album = reader.GetInt32(0);
+                            albumIds.Add(id_album);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"Error occurred while fetching albums with name '{albumName}': {ex.Message}"); 
+            }
+            
+            return albumIds;
+        }
+
+        //METHODS FOR SEARCHING
+
+        public List<Songs> GetSongsByPerformer(int performerId)
+        {
+            List<Songs> songs = new List<Songs>();
+            string query = "SELECT * FROM rolas WHERE id_performer = @id_performer";
+
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id_performer", performerId);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idsong = reader.GetInt32(0);
+                        int idAlbum = reader.GetInt32(2);
+                        string path = reader.GetString(3);
+                        string title = reader.GetString(4);
+                        int track = reader.GetInt32(5);
+                        int year = reader.GetInt32(6);
+                        string genre = reader.GetString(7);
+
+                        Songs song = new Songs(idsong, performerId, idAlbum, path, title, track, year, genre);
+                        songs.Add(song);
+                    }
+                }
+            }
+            return songs;
+        }
+
+        public List<Songs> GetSongsByAlbum(int albumId)
+        {
+            List<Songs> songs = new List<Songs>();
+            string query = "SELECT * FROM rolas WHERE id_album = @id_album";
+
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@id_album", albumId);
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idsong = reader.GetInt32(0);
+                        int idPerformer = reader.GetInt32(1);
+                        string path = reader.GetString(3);
+                        string title = reader.GetString(4);
+                        int track = reader.GetInt32(5);
+                        int year = reader.GetInt32(6);
+                        string genre = reader.GetString(7);
+
+                        Songs song = new Songs(idsong, idPerformer, albumId, path, title, track, year, genre);
+                        songs.Add(song);
+                    }
+                }
+            }
+            return songs;
+        }
+
+        public List<Songs> GetSongsByTitle(string songTitle)
+        {
+            List<Songs> songs = new List<Songs>();
+            string query = "SELECT * FROM rolas WHERE title LIKE @title";
+
+            using (SQLiteCommand command = new SQLiteCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@title", "%" + songTitle + "%");
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int idsong = reader.GetInt32(0);
+                        int idPerformer = reader.GetInt32(1);
+                        int idAlbum = reader.GetInt32(2);
+                        string path = reader.GetString(3);
+                        string title = reader.GetString(4);
+                        int track = reader.GetInt32(5);
+                        int year = reader.GetInt32(6);
+                        string genre = reader.GetString(7);
+
+                        Songs song = new Songs(idsong, idPerformer, idAlbum, path, title, track, year, genre);
+                        songs.Add(song);
+                    }
+                }
+            }
+            return songs;
+        }
 
         //Disconnection db method        
         public void Disconnect()

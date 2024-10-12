@@ -43,7 +43,27 @@ namespace MusicApp
             Button searchButton = new Button("\u26B2");
             searchEntry.Activated += (sender,e) =>
             {
+                string query = searchEntry.Text;
+                bool isValid = methods.IsValid(query);
 
+                if (!isValid)
+                {
+                    MessageDialog error = new MessageDialog(
+
+                        window,
+                        DialogFlags.Modal,
+                        MessageType.Error,
+                        ButtonsType.Ok,
+                        "Invalid search"
+                    );
+                    error.Run();
+                    error.Hide();
+                }
+                else
+                {
+                    PerformSearching(query);
+                }
+                
             };
 
             Box searchBox = new Box(Orientation.Horizontal, 5);
@@ -319,7 +339,13 @@ namespace MusicApp
 
         }
 
+
         //EVENT HANDLING
+
+        private static void PerformSearching(string query)
+        {
+            
+        }
 
         private static void ShowEditPerformer(string path)
         {
@@ -581,13 +607,6 @@ namespace MusicApp
                 
             treeView.Model = songList; 
             treeView.ShowAll();
-        }
-
-        //para regresar las listas de canciones resultados de las busquedas 
-        private static ListStore HandleSearch(object sender, EventArgs e)
-        {
-            ListStore list = new ListStore(typeof(string), typeof(string), typeof(string));
-            return list;
         }
 
     } 

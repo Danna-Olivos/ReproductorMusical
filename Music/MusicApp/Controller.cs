@@ -7,6 +7,7 @@ namespace MusicApp
     {
         private DataBase db = DataBase.Instance;
         private Minero miner;
+        private Searching search;
         private string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".config", "CapyMusic", "config.txt");
         private string path{get;set;}
  
@@ -14,6 +15,7 @@ namespace MusicApp
         {
             path = ConfigPath();
             miner = new Minero();
+            search = new Searching();
         }
 
         //obtener direccion del config
@@ -63,6 +65,21 @@ namespace MusicApp
  
             List<(string Title, string Performer, string Album, string Path)> songList = new List<(string, string, string, string)>();
             List<Songs> availableSongs = db.ListSongs();
+
+            foreach (Songs song in availableSongs)
+            {
+                string performerName = GetSongPerformer(song.IdPerformer);
+                string albumName = GetSongAlbum(song.IdAlbum);
+                songList.Add((song.Title, performerName, albumName,song.Path));
+            }
+            return songList;
+        }
+
+        public List<(string Title, string Performer, string Album, string Path)> ShowFoundSongList(List<Songs> results)
+        {
+ 
+            List<(string Title, string Performer, string Album, string Path)> songList = new List<(string, string, string, string)>();
+            List<Songs> availableSongs = results;
 
             foreach (Songs song in availableSongs)
             {
@@ -222,6 +239,16 @@ namespace MusicApp
         {
             InGroup newInGroup = new InGroup(personID, groupId);
             db.MakeInGroup(newInGroup);
+        }
+
+        public void FindSongs(string query)
+        {
+            search.HandleSearch(query); 
+        }
+
+        public bool IsValid(string query)
+        {
+            return search.IsQueryValid(query);
         }
 
     }
