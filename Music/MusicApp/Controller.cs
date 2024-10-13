@@ -46,7 +46,7 @@ namespace MusicApp
         {
             if(!Directory.Exists(newPath))
             {
-                return false; //mandar mensaje de no mames no existe
+                return false;
             }
             path = newPath;
             System.IO.File.WriteAllText(configPath, path);

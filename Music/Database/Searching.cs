@@ -9,44 +9,41 @@ namespace Database
         DataBase db = DataBase.Instance;
         public List<Songs> HandleSearch(string query)
         {
-            // Initialize an empty list to hold found songs
+            string newQ = SelectFromQuery(query);
+
             List<Songs> foundSongs = new List<Songs>();
 
             if (string.IsNullOrWhiteSpace(query))
             {
                 Console.WriteLine("Empty search query, please provide valid input.");
-                return foundSongs;  // Return an empty list
+                return foundSongs;
             }
 
-            // Define the regex patterns
-            string songPattern = @"^[A-Za-z0-9'!?,\s]+$";
-            string performerPattern = @"^[A-Za-z\s]+$";
-            string albumPattern = @"^[A-Za-z0-9\s()]+$";
+            string songPattern = @"^t:\s*[A-Za-z0-9'!?,\s]+$";
+            string performerPattern = @"^p:\s*[A-Za-z\s]+$";
+            string albumPattern = @"^a:\s*[A-Za-z0-9\s()]+$";
 
-            // Check if the query matches the song pattern
             if (Regex.IsMatch(query, songPattern, RegexOptions.IgnoreCase))
             {
                 Console.WriteLine("Search for a song");
-                foundSongs = SearchSong(query);  // Get songs by title
+                foundSongs = SearchSong(newQ);  
             }
-            // Check if the query matches the performer pattern
+
             else if (Regex.IsMatch(query, performerPattern, RegexOptions.IgnoreCase))
             {
                 Console.WriteLine("Search for a performer");
-                foundSongs = SearchSongPerformer(query);  // Get songs by performer
+                foundSongs = SearchSongPerformer(newQ);  
             }
-            // Check if the query matches the album pattern
             else if (Regex.IsMatch(query, albumPattern, RegexOptions.IgnoreCase))
             {
                 Console.WriteLine("Search for an album");
-                foundSongs = SearchSongAlbum(query);  // Get songs by album
+                foundSongs = SearchSongAlbum(newQ);
             }
             else
             {
                 Console.WriteLine("Invalid search query, please try again.");
             }
 
-            // Return the list of found songs
             return foundSongs;
         }
 
@@ -81,12 +78,24 @@ namespace Database
             return foundSongs;
         }
 
+        private string SelectFromQuery(string query)
+        {
+            int colonIndex = query.IndexOf(':');
+            if (colonIndex >= 0 && colonIndex < query.Length - 1)
+            {
+                return query.Substring(colonIndex + 1).Trim();
+            }
+            
+            return string.Empty;
+
+        }
+
 
         public bool IsQueryValid(string query)
         {
-            string songPattern = @"^[A-Za-z0-9'!?,\s]+$";
-            string performerPattern = @"^[A-Z][a-zA-Z\s]+$";
-            string albumPattern = @"^[A-Za-z0-9\s()]+$";
+            string songPattern = @"^t:\s*[A-Za-z0-9'!?,\s]+$";
+            string performerPattern = @"^p:\s*[A-Za-z\s]+$";
+            string albumPattern = @"^a:\s*[A-Za-z0-9\s()]+$";
 
             if (Regex.IsMatch(query, songPattern) || 
                 Regex.IsMatch(query, performerPattern) || 
